@@ -1,4 +1,10 @@
-.uk-navbar-container {
-    align-items: center;
-    background-color: blue;
+*{
+    font-family: 'Poppins', sans-serif;
+}
+
+.uk-navbar-nav > li > a {
+    color: #C98A40;
+    text-transform: capitalize;
+    font-size: 20px;
+    font-weight: 400;
 }

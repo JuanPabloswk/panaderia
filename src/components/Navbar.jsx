@@ -2,7 +2,7 @@ import React from 'react'
 import "uikit/dist/css/uikit.min.css";
 import UIkit from "uikit";
 import Icons from "uikit/dist/js/uikit-icons";
-import nav from '../styles/nav.css'
+import '../styles/nav.css';
 
 UIkit.use(Icons);
 
@@ -10,33 +10,40 @@ function Navbar() {
   return (
     <nav className="uk-navbar-container">
         <div className="uk-container">
-            <div uk-navbar="true">
+            <div data-uk-navbar>
 
-                <div className="uk-navbar-left">
+                <div className="uk-navbar-center">
 
-                    <a className="uk-navbar-item uk-logo" href="#" aria-label="Back to Home">Logo</a>
+                    <div className="uk-navbar-center-left">
+                        <ul className="uk-navbar-nav">
+                            <li><a href="#" >Inicio</a></li>
+                            <li><a href="#" >Nuestra historia</a></li>
+                            <li><a href="#" >Menu</a></li>
+                        </ul>
+                    </div>
+                    <a className="uk-navbar-item uk-logo" href="#">Logo</a>
+                    <div className="uk-navbar-center-right">
+                        <ul className="uk-navbar-nav">
+                            <li>
+                                <a href="#">Tienda</a>
+                                <div className="uk-navbar-dropdown">
+                                    <ul className="uk-nav uk-navbar-dropdown-nav">
+                                        <li><a href="#">Contactanos</a></li>
+                                        <li><a href="#">Item</a></li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li><a href="#">Contactanos</a></li>
+                            <li><a href="#">Comprar ahora</a></li>
+                            <li><a href="#"><span data-uk-icon="icon: heart"></span></a></li>
+                            <li><a href="#">Comprar ahora</a></li>
 
-                    <ul className="uk-navbar-nav">
-                    <li>
-                        <a href="#">
-                            <span className="uk-icon uk-margin-xsmall-right" uk-icon="icon: star"></span>
-                            Features
-                        </a>
-                    </li>
-                </ul>
 
-                <div className="uk-navbar-item">
-                    <div>Some <a href="#">Link</a></div>
+                        </ul>
+                        
+                    </div>
+
                 </div>
-
-                <div className="uk-navbar-item">
-                    <form action="javascript:void(0)">
-                        <input className="uk-input uk-form-width-small" type="text" placeholder="Input" aria-label="Input" />
-                        <button className="uk-button uk-button-default">Button</button>
-                    </form>
-                </div>
-
-            </div>
 
             </div>
         </div>
