@@ -1,13 +1,20 @@
-import './App.css'
+import { Routes, Route, Navigate } from 'react-router-dom';
+import Home from './pages/Home'; 
+import OurStory from './pages/OurStory';
+import Navbar from './components/Navbar';
 
+import './App.css'
+ 
 function App() {
   return (
-    <div className="uk-container">
-      <h1 className="uk-heading-medium uk-text-center">Bienvenido a Panadería</h1>
-
-      <button className="uk-button uk-button-primary">Comprar</button>
-      <button className="uk-button uk-button-default">Ver Productos</button>
-    </div>
+  <>
+    <Navbar />
+    <Routes>
+        <Route path="/" element={<Navigate to="/home" replace />} />
+        <Route path="/Home" element={<Home />} />
+        <Route path="/Nosotros" element={<OurStory />} />
+    </Routes>
+  </>
   );
 }
 
