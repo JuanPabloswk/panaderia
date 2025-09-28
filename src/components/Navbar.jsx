@@ -1,4 +1,3 @@
-import React from 'react'
 import "uikit/dist/css/uikit.min.css";
 import UIkit from "uikit";
 import Icons from "uikit/dist/js/uikit-icons";
@@ -37,7 +36,6 @@ function Navbar() {
                             <li><a href="#">Comprar ahora</a></li>
                             <li><a href="#"><span data-uk-icon="icon: heart"></span></a></li>
                             <li><a href="#">Comprar ahora</a></li>
-
 
                         </ul>
                         
