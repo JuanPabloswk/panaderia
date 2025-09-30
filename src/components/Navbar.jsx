@@ -35,8 +35,7 @@ function Navbar() {
                             </li>
                             <li><a href="#">Contactanos</a></li>
                             <li><a href="#">Comprar ahora</a></li>
-                            <li><a href="#"><span data-uk-icon="icon: heart"></span></a></li>
-                            <li><a href="#">Comprar ahora</a></li>
+                            <li><a href="#"><span data-uk-icon="icon: cart"></span></a></li>
 
 
                         </ul>
