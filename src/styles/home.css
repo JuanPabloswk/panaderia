@@ -1,0 +1,11 @@
+
+.slider-small img {
+  max-height: 600px;   
+  width: 100%;
+  object-fit: cover;   
+}
+
+.uk-slidenav {
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.7)); 
+}
+

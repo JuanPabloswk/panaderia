@@ -15,7 +15,7 @@ function Navbar() {
 
                     <div className="uk-navbar-center-left">
                         <ul className="uk-navbar-nav">
-                            <li><a href="#" >Inicio</a></li>
+                            <li><a href="/inicio" >Inicio</a></li>
                             <li><a href="#" >Nuestra historia</a></li>
                             <li><a href="#" >Menu</a></li>
                         </ul>
