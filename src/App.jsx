@@ -3,7 +3,6 @@ import Home from './pages/Home';
 import OurStory from './pages/OurStory';
 import Navbar from './components/Navbar';
 
-import './App.css'
  
 function App() {
   return (
@@ -11,8 +10,8 @@ function App() {
     <Navbar />
     <Routes>
         <Route path="/" element={<Navigate to="/home" replace />} />
-        <Route path="/Home" element={<Home />} />
-        <Route path="/Nosotros" element={<OurStory />} />
+        <Route path="/home" element={<Home />} />
+        <Route path="/nosotros" element={<OurStory />} />
     </Routes>
   </>
   );

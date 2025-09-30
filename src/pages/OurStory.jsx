@@ -1,7 +1,6 @@
 function OurStory() {
   return (
     <div>
-        <Navbar />
         <section className="uk-section uk-section-default">
             <div className="uk-container">
                 <div className="uk-grid-large uk-flex-middle" data-uk-grid>
@@ -10,10 +9,10 @@ function OurStory() {
                         <img 
                         src='/assets/our-story.jpg' 
                         alt='OurStory' 
-                        className="uk-border-rounded"data-uk-img
+                        className="uk-border-rounded" data-uk-img
                         />
                     </div>
-                    /*texto*/   
+                    {/*texto*/}   
                     <div className="uk-width-1-2@s">
                         <h2 className="uk-heading-small">Our Story</h2>
                         <p>
@@ -40,4 +39,4 @@ function OurStory() {
   )
 }
 
-export default OurStory
+export default OurStory;
