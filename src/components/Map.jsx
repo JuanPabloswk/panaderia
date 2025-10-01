@@ -7,7 +7,7 @@ function Map() {
     <MapContainer
       center={position}
       zoom={15}
-      style={{ height: "400px", width: "100%", borderRadius: "12px" }}
+      style={{ height: "400px", width: "50%", borderRadius: "12px" }}
     >
       {/* Capa base del mapa (OpenStreetMap) */}
       <TileLayer
