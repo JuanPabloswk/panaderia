@@ -14,7 +14,7 @@ function OurStory() {
                     </div>
                     {/*texto*/}   
                     <div className="uk-width-1-2@s">
-                        <h2 className="uk-heading-small">Our Story</h2>
+                        <h2 className="uk-heading-small">Nuestra historia</h2>
                         <p>
                             Desde nuestros inicios, hemos horneado con pasión y dedicación,
                             ofreciendo a nuestros clientes pan fresco, pasteles artesanales y
