@@ -16,7 +16,7 @@ function Navbar() {
                 <div className="uk-navbar-center">
 
                     <div className="uk-navbar-center-left">
-                        <ul className="uk-nav
+                        <ul className="uk-navbar-nav">
                             <li><NavLink to="/" className="uk-link-reset">Inicio</NavLink></li>
                             <li><NavLink to="/Nosotros" className="uk-link-reset">Nuestra historia</NavLink></li>
                             <li><NavLink to="/products" className="uk-link-reset">Menú</NavLink></li>
@@ -33,24 +33,12 @@ function Navbar() {
                                 <NavLink to="/cart" className="uk-link-reset">Tienda</NavLink>
                                 <div className="uk-navbar-dropdown">
                                     <ul className="uk-nav uk-navbar-dropdown-nav">
-                                        <li>
-                                            <NavLink to="/contact" className="uk-link-reset">Contáctanos</NavLink>
-                                        </li>
-                                        <li>
-                                            <NavLink to="/products" className="uk-link-reset">Item</NavLink>
-                                        </li>
+                                        <li><NavLink to="/products" className="uk-link-reset">Item</NavLink></li>
                                     </ul>
                                 </div>
                             </li>
-                            <li>
-                                <NavLink to="/Contacto" className="uk-link-reset">Contáctanos</NavLink>
-                            </li>
-                            <li>
-                                <NavLink to="/favorites" className="uk-link-reset"><span data-uk-icon="icon: heart"></span></NavLink>
-                            </li>
-                            <li> 
-                                <NavLink to="/checkout" className="uk-link-reset">Comprar ahora</NavLink>
-                            </li>
+                            <li><NavLink to="/Contacto" className="uk-link-reset">Contáctanos</NavLink></li>
+                            <li><NavLink to="/checkout" className="uk-link-reset">Comprar ahora</NavLink></li>
                         </ul>
                     </div>
                 </div>
