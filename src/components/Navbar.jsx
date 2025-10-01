@@ -16,16 +16,10 @@ function Navbar() {
                 <div className="uk-navbar-center">
 
                     <div className="uk-navbar-center-left">
-                        <ul className="uk-navbar-nav">
-                            <li>
-                                <NavLink to="/" className="uk-link-reset">Inicio</NavLink>
-                            </li>
-                            <li>
-                                <NavLink to="/Nosotros" className="uk-link-reset">Nuestra historia</NavLink>
-                            </li>
-                            <li>
-                                <NavLink to="/products" className="uk-link-reset">Menú</NavLink>
-                            </li>
+                        <ul className="uk-nav
+                            <li><NavLink to="/" className="uk-link-reset">Inicio</NavLink></li>
+                            <li><NavLink to="/Nosotros" className="uk-link-reset">Nuestra historia</NavLink></li>
+                            <li><NavLink to="/products" className="uk-link-reset">Menú</NavLink></li>
                         </ul>
                     </div>
                         <NavLink to="/" className="uk-navbar-item uk-logo">

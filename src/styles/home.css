@@ -1,0 +1,42 @@
+.info-cards {
+    text-align: center;
+}
+
+.info-cards h1 {
+    font-size: 34px;
+    color: #C98A40;
+    margin: 40px 0 0 0 ;
+    font-weight: bold;
+}
+
+.info-cards h2 {
+    font-size: 29px;
+    margin-top: 10px;
+}
+
+.cards {
+    margin: 40px 80px 80px 80px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.uk-section {
+    background-color: #584125;
+}
+
+.uk-section h2 {
+    color: white;
+    font-weight: bolder;
+}
+
+.general-mapa {
+    margin-top: 60px;
+    display: flex;
+}
+.mapa-info {
+    width: 500px;
+    text-align: left;
+    margin-left: 50px;
+    padding: 2px;
+}
