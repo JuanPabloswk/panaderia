@@ -2,6 +2,7 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import Home from './pages/Home'; 
 import OurStory from './pages/OurStory';
 import Navbar from './components/Navbar';
+import "leaflet/dist/leaflet.css";
 
  
 function App() {

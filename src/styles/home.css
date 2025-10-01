@@ -1,11 +1,22 @@
-
-.slider-small img {
-  max-height: 600px;   
-  width: 100%;
-  object-fit: cover;   
+.info-cards {
+    text-align: center;
 }
 
-.uk-slidenav {
-  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.7)); 
+.info-cards h1 {
+    font-size: 34px;
+    color: #C98A40;
+    margin: 40px 0 0 0 ;
+    font-weight: bold;
 }
 
+.info-cards h2 {
+    font-size: 29px;
+    margin-top: 10px;
+}
+
+.cards {
+    margin: 40px 80px 80px 80px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}

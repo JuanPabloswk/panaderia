@@ -1,0 +1,24 @@
+.slider-small img {
+  max-height: 600px;   
+  width: 100%;
+  object-fit: cover;   
+}
+
+.uk-slidenav {
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.7)); 
+}
+
+.uk-overlay {
+    background-color: #C98A40;
+    opacity: 0.9 !important;
+}
+
+h3{
+    font-weight: bolder;
+    font-size: 25px;
+}
+
+p {
+    color: white;
+    font-size: 18px;
+}

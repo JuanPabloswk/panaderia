@@ -1,47 +1,39 @@
-import imagen1 from '/images/imagen1.jpg'
-import imagen2 from '/images/imagen2.jpg'
-import imagen3 from '/images/imagen3.jpg'
-import imagen4 from '/images/imagen4.jpg'
-import imagen5 from '/images/imagen5.jpg'
 import '../styles/home.css'
+import Slider from '../components/Slider.jsx'
+import Card from '../components/Card.jsx'
+import Map from '../components/Map.jsx'
 
 function Home() {
   return (
-    <div className="uk-position-relative uk-visible-toggle uk-light slider-small" tabIndex="-1" uk-slider="clsActivated: uk-transition-active; center: true">
-
-      <div className="uk-slider-items uk-grid">
-          <div className="uk-width-1-1">
-              <div className="uk-panel">
-                  <img src={imagen1} width="1800" height="1200" alt="" />
-                  <div className="uk-overlay uk-overlay-primary uk-position-bottom uk-text-center uk-transition-slide-bottom">
-                      <h3 className="uk-margin-remove">Bienvenidos</h3>
-                      <p className="uk-margin-remove">Esta es tu panaderia de confianza con pan de calidad</p>
-                  </div>
-              </div>
-          </div>
-          <div className="uk-width-1-1">
-              <div className="uk-panel">
-                  <img src={imagen2} width="1800" height="1200" alt="" />
-                  <div className="uk-overlay uk-overlay-primary uk-position-bottom uk-text-center uk-transition-slide-bottom">
-                      <h3 className="uk-margin-remove">Compromiso</h3>
-                      <p className="uk-margin-remove">Estamos comprometidos a ofrecer pan de calidad para todos</p>
-                  </div>
-              </div>
-          </div>
-          <div className="uk-width-1-1">
-              <div className="uk-panel">
-                  <img src={imagen3} width="1800" height="1200" alt="" />
-                  <div className="uk-overlay uk-overlay-primary uk-position-bottom uk-text-center uk-transition-slide-bottom">
-                      <h3 className="uk-margin-remove">Calidad</h3>
-                      <p className="uk-margin-remove">Siempre pan fresco en la mesa para ti</p>
-                  </div>
-              </div>
-          </div>
+    <div>
+      <Slider />
+      <div className='info-cards'>
+        <h1>Nuestros servicios</h1>
+        <h2>Cubren estas areas</h2>
+        
+        {/* Tarjetas de servicios */}
+        <div class="cards uk-child-width-expand@s uk-grid-small uk-grid-match uk-text-center" data-uk-grid>
+          <Card icon="cart" title="PANADERIA" description="¡Tenemos todos tus panes tradicionales favoritos, los 7 días de la semana! Puedes elegir entre una gran variedad de galletas, pasteles y tartas."/>
+          <Card icon="cart" title="TORTAS" description="Nos especializamos en pasteles personalizados para todas las ocasiones. Puede elegir entre una gran variedad de diseños para crear el pastel perfecto para usted."/>
+          <Card icon="cart" title="JUGOS" description="Elige entre una gran variedad de frutas y verduras para preparar tu zumo favorito. También puedes disfrutar de un sencillo zumo de naranja recién exprimido."/>
+        </div>
+        <div class="cards uk-child-width-expand@s uk-grid-small uk-grid-match uk-text-center" data-uk-grid>
+          <Card icon="cart" title="CATERING" description="Ofrecemos servicios de catering para todo tipo de eventos, desde bodas hasta actos empresariales. Ofrecemos nuestra auténtica comida para llevar o para servir en el lugar del evento."/>
+          <Card icon="cart" title="CAMION DE SONRISAS" description="Nuestro nuevo y fantástico equipo saldrá a la calle con nuestros mejores productos seleccionados para ti y mucho más."/>
+          <Card icon="cart" title="BODAS" description="Desde elegantes tartas de boda hasta deliciosas cestas de regalo, podemos ayudarte a crear una boda perfecta y única."/>
+        </div>
       </div>
 
-      <a className="uk-position-center-left uk-position-medium uk-hidden-hover" href="#" uk-slidenav-previous="ratio:2" uk-slider-item="previous"></a>
-      <a className="uk-position-center-right uk-position-medium uk-hidden-hover" href="#" uk-slidenav-next="ratio:2" uk-slider-item="next"></a>
-
+      {/* Mapa */}
+      <section className="uk-section uk-section-default">
+        <div className="uk-container">
+          <h2 className="uk-heading-line uk-text-center">
+            <span>Encuéntranos</span>
+          </h2>
+          <Map />
+        </div>
+      </section>
+      
     </div>
   )
 }
