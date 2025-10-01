@@ -59,13 +59,13 @@ function Contacto() {
 
           <div>
             <h4 className="uk-text-bold">... O CONTÁCTANOS DIRECTAMENTE</h4>
-            <p>
+            <p style={{ color: "black" }}>
               En <strong>Panadería La Hornaza</strong> nos encanta endulzar
               tus mañanas y tardes con pan fresco, tortas caseras y postres
               artesanales. Siempre trabajamos con ingredientes de la mejor
               calidad para ofrecerte un sabor único.
             </p>
-            <p>
+            <p style={{ color: "black" }}>
               Si tienes dudas sobre pedidos especiales, catering o quieres
               reservar, ¡escríbenos o visítanos directamente en nuestro local!
             </p>
