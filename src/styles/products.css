@@ -1,0 +1,31 @@
+.products {
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+
+}
+
+.uk-card {
+    border-radius: 15px;
+}
+
+.uk-card h3{
+    text-align: left;
+    margin: auto;
+}
+
+.uk-card p{
+    color: black;
+    margin-top: 0px;
+}
+
+.uk-card img {
+    height: 250px;
+    width: 400px;
+    object-fit: cover;
+    border-radius: 15px 15px 0 0;
+}
+
+.producto {
+    width: auto;
+}

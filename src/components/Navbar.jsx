@@ -9,7 +9,7 @@ UIkit.use(Icons);
 
 function Navbar() {
   return (
-    <nav className="uk-navbar-container">
+    <nav className="uk-navbar-container uk-navbar-transparent uk-position-fixed uk-position-top uk-width-1-1" data-uk-navbar="true">
         <div className="uk-container">
             <div data-uk-navbar>
 
@@ -18,8 +18,17 @@ function Navbar() {
                     <div className="uk-navbar-center-left">
                         <ul className="uk-navbar-nav">
                             <li><NavLink to="/" className="uk-link-reset">Inicio</NavLink></li>
-                            <li><NavLink to="/Nosotros" className="uk-link-reset">Nuestra historia</NavLink></li>
-                            <li><NavLink to="/products" className="uk-link-reset">Menú</NavLink></li>
+                            <li>
+                                <NavLink to="/Productos" className="uk-link-reset">Menú</NavLink>
+                                <div className="uk-navbar-dropdown">
+                                    <ul className="uk-nav uk-navbar-dropdown-nav">
+                                        <li><NavLink to="/Desayunos" className="uk-link-reset">Desayunos</NavLink></li>
+                                        <li><NavLink to="/Panaderia" className="uk-link-reset">Panadería</NavLink></li>
+                                        <li><NavLink to="/Pasteleria" className="uk-link-reset">Pastelería</NavLink></li>
+                                        <li><NavLink to="/Bebidas" className="uk-link-reset">Bebidas</NavLink></li>
+                                    </ul>
+                                </div>
+                            </li>
                         </ul>
                     </div>
                         <NavLink to="/" className="uk-navbar-item uk-logo">
@@ -29,16 +38,9 @@ function Navbar() {
                         </NavLink>
                     <div className="uk-navbar-center-right" >
                         <ul className="uk-navbar-nav">
-                            <li>
-                                <NavLink to="/cart" className="uk-link-reset">Tienda</NavLink>
-                                <div className="uk-navbar-dropdown">
-                                    <ul className="uk-nav uk-navbar-dropdown-nav">
-                                        <li><NavLink to="/products" className="uk-link-reset">Item</NavLink></li>
-                                    </ul>
-                                </div>
-                            </li>
                             <li><NavLink to="/Contacto" className="uk-link-reset">Contáctanos</NavLink></li>
-                            <li><NavLink to="/checkout" className="uk-link-reset">Comprar ahora</NavLink></li>
+                            <li><NavLink to="/Nosotros" className="uk-link-reset">Nuestra historia</NavLink></li>
+                            <li><NavLink to="/checkout" className="uk-link-reset"><span className="uk-icon uk-icon-shopping-cart"></span></NavLink></li>
                         </ul>
                     </div>
                 </div>

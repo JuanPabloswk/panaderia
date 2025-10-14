@@ -1,3 +1,6 @@
+body{
+    background-color: #F5F5F5;
+}
 .info-cards {
     text-align: center;
 }
@@ -15,10 +18,12 @@
 }
 
 .cards {
-    margin: 40px 80px 80px 80px;
+    padding: 0 40px;
+    margin: 40px auto 80px auto;
+    align-items: center;
     display: flex;
-    justify-content: center;
-    gap: 20px;
+    justify-items: center;
+    gap: 30px;
 }
 
 .uk-section {
