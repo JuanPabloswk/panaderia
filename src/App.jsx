@@ -4,6 +4,7 @@ import OurStory from './pages/OurStory';
 import Contacto from './pages/Contacto';
 import Navbar from './components/Navbar';
 import Products from './pages/Products';
+import Footer from './components/Footer';
 import "leaflet/dist/leaflet.css";
 
  
@@ -18,6 +19,8 @@ function App() {
         <Route path="/Contacto" element={<Contacto />} />
         <Route path="/Productos" element={<Products />} />
     </Routes>
+    <Footer />
+
   </>
   );
 }

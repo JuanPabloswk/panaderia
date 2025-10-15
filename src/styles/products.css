@@ -7,6 +7,8 @@
 
 .uk-card {
     border-radius: 15px;
+    max-height: 500px;
+    min-height: 500px;
 }
 
 .uk-card h3{
@@ -15,7 +17,7 @@
 }
 
 .uk-card p{
-    color: black;
+    color: #584125;
     margin-top: 0px;
 }
 
@@ -26,6 +28,46 @@
     border-radius: 15px 15px 0 0;
 }
 
+
 .producto {
     width: auto;
+}
+
+.precio-button {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: auto;
+}
+
+.precio-button h2 {
+    color: #584125;
+    font-weight: bold;
+    margin: 0;
+    font-size: 27px;
+}
+
+.precio-button button {
+    border-radius: 20px;
+    background-color: #C98A40;
+    font-weight: bold;
+    color: #584125;
+}
+
+.uk-modal-dialog {
+    border-radius: 15px;
+    align-items: flex-start;
+}
+
+.imagen-modal-contenedor {
+    align-items: left;
+    display: flex;
+    margin: 0;
+    padding: 0;
+}
+
+.uk-modal-dialog img{
+    border-radius: 15px;
+    height: fill-available;
+
 }

@@ -1,7 +1,6 @@
 import '../styles/home.css'
 import Slider from '../components/Slider.jsx'
 import Card from '../components/Card.jsx'
-import Map from '../components/Map.jsx'
 
 function Home() {
   return (
@@ -23,37 +22,6 @@ function Home() {
           <Card icon="cart" title="BODAS" description="Desde elegantes tartas de boda hasta deliciosas cestas de regalo, podemos ayudarte a crear una boda perfecta y única."/>
         </div>
       </div>
-
-      {/* Mapa */}
-      <section className="uk-section uk-section-default">
-        <div className="uk-container">
-          <h2 className="uk-heading-line uk-text-center">
-            <span>Encuéntranos</span>
-          </h2>
-          <div className='general-mapa' data-uk-grid>
-            
-              <Map />
-
-            <div className='mapa-info'>
-              <div>
-                <h2>Bogotá</h2>
-                <p>Avenida calle 127. Barrio Prado veraniego</p>
-                <p>Avenida Caracas. Barrio Chapinero</p>
-              </div>
-              <div style={{marginTop: "70px"}}>
-                <h2>Neiva</h2>
-                <p>Centro Comercial San Pedro Plaza</p>
-                <p>Carrera 5 # 12-41 Barrio Sevilla</p>
-              </div>
-              
-            </div>
-          </div>
-          
-          
-          
-        </div>
-      </section>
-      
     </div>
   )
 }

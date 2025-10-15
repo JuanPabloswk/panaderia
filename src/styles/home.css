@@ -26,22 +26,3 @@ body{
     gap: 30px;
 }
 
-.uk-section {
-    background-color: #584125;
-}
-
-.uk-section h2 {
-    color: white;
-    font-weight: bolder;
-}
-
-.general-mapa {
-    margin-top: 60px;
-    display: flex;
-}
-.mapa-info {
-    width: 500px;
-    text-align: left;
-    margin-left: 50px;
-    padding: 2px;
-}
