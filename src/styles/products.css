@@ -2,6 +2,7 @@
     justify-content: center;
     gap: 10px;
     width: 100%;
+    margin-bottom: 100px;
 
 }
 
@@ -11,9 +12,13 @@
     min-height: 500px;
 }
 
-.uk-card h3{
-    text-align: left;
+.uk-card-title{
+    color: #C98A40 !important;
+    text-align: center;
     margin: auto;
+    margin-bottom: 10px;
+    font-weight: bold;
+    font-size: 35px;
 }
 
 .uk-card p{
@@ -54,20 +59,49 @@
     color: #584125;
 }
 
-.uk-modal-dialog {
+.modal-custom-grid {
+    padding: 0;
+    overflow: hidden;
+    max-width: 600px;
+    width: 90%;
+    min-height: 600px;
+    align-items: center;
+    justify-content: center;
     border-radius: 15px;
-    align-items: flex-start;
 }
 
 .imagen-modal-contenedor {
-    align-items: left;
+    height: 100%;
+    width: 40%;
     display: flex;
+}
+
+.imagen-modal-contenedor img {
+    height: 600px;
+    width: 100%;
+    object-fit: cover;
     margin: 0;
     padding: 0;
 }
 
-.uk-modal-dialog img{
-    border-radius: 15px;
-    height: fill-available;
+.uk-modal-title {
+    color: #C98A40;
+    font-weight: bold;
+    font-size: 50px;
+    margin-top: 0;
+}
 
+.modal-content-right p {
+    color: #584125;
+    font-size: 20px;
+    margin-top: 0;
+    padding: 0;
+}
+
+.modal-content-right {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; 
+    height: 100%; 
+    
 }

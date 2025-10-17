@@ -8,6 +8,7 @@ import '../styles/nav.css';
 UIkit.use(Icons);
 
 function Navbar() {
+    const categorias = ['desayunos', 'panaderia', 'pasteleria', 'bebidas'];
   return (
     <nav className="uk-navbar-container uk-navbar-transparent uk-position-fixed uk-position-top uk-width-1-1" data-uk-navbar="true">
         <div className="uk-container">
@@ -22,10 +23,13 @@ function Navbar() {
                                 <NavLink to="/Productos" className="uk-link-reset">Menú</NavLink>
                                 <div className="uk-navbar-dropdown">
                                     <ul className="uk-nav uk-navbar-dropdown-nav">
-                                        <li><NavLink to="/Desayunos" className="uk-link-reset">Desayunos</NavLink></li>
-                                        <li><NavLink to="/Panaderia" className="uk-link-reset">Panadería</NavLink></li>
-                                        <li><NavLink to="/Pasteleria" className="uk-link-reset">Pastelería</NavLink></li>
-                                        <li><NavLink to="/Bebidas" className="uk-link-reset">Bebidas</NavLink></li>
+                                        {categorias.map((cat) => (
+                                            <li key={cat}>
+                                                <NavLink to={`/Productos/${cat.charAt(0).toUpperCase() + cat.slice(1)}`} className="uk-link-reset">
+                                                    {cat.charAt(0).toUpperCase() + cat.slice(1)}
+                                                </NavLink>
+                                            </li>
+                                        ))}
                                     </ul>
                                 </div>
                             </li>
