@@ -6,10 +6,11 @@
 
 }
 
-.uk-card {
+.product-card {
     border-radius: 15px;
-    max-height: 500px;
-    min-height: 500px;
+    max-height: 600px;
+    min-height: 480px;
+    max-width: 400px;
 }
 
 .uk-card-title{
@@ -21,12 +22,12 @@
     font-size: 35px;
 }
 
-.uk-card p{
+.product-card p{
     color: #584125;
     margin-top: 0px;
 }
 
-.uk-card img {
+.product-card img {
     height: 250px;
     width: 400px;
     object-fit: cover;

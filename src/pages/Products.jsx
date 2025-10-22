@@ -17,7 +17,7 @@ function Product({ producto, onSelect }) {
         onSelect(productoImagen);
     }
     return (
-        <div className="uk-card uk-card-default">
+        <div className="product-card uk-card uk-card-default">
             <div className="imagen-card uk-card-media-top">
                 {imgUrl ? (
                     <img src={imgUrl} alt={producto.nombre} />

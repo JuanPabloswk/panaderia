@@ -1,8 +1,22 @@
 import '../styles/home.css'
 import Slider from '../components/Slider.jsx'
-import Card from '../components/Card.jsx'
+import '../styles/card.css'
 
-function Home() {
+function Card({icon, title, description}) {
+  return (
+    <div>
+          <div>
+              <div className="home-card uk-card uk-card-default uk-card-body">
+                  <span uk-icon={`icon: ${icon}; ratio:2`}></span>
+                  <h3 className="uk-card-title">{title}</h3>
+                  <p style={{color: "black"}}>{description}</p>
+              </div>
+          </div>
+    </div>
+  )
+}
+
+export default function Home() {
   return (
     <div>
       <Slider />
@@ -25,5 +39,3 @@ function Home() {
     </div>
   )
 }
-
-export default Home

@@ -19,10 +19,26 @@ body{
 
 .cards {
     padding: 0 40px;
-    margin: 40px auto 80px auto;
+    margin: 40px;
     align-items: center;
     display: flex;
     justify-items: center;
-    gap: 30px;
+    gap: 0;
+}
+
+.home-card {
+    max-width: 300px;
+    max-height: 400px;
+    min-height: 23rem;
+    min-width: 22rem;
+}
+
+.home-card p {
+    font-size: 16px;
+    text-align: justify;
+}
+
+.home-card h3 {
+    color : #C98A40 !important;
 }
 
