@@ -94,7 +94,7 @@ export default function Products() {
 
     return (
         <div>
-            <h1>Nuestros productos</h1>
+            <h1 className='titulo-productos'>Nuestros productos</h1>
             <div className="products uk-grid-column-small uk-grid-row-medium uk-child-width-1-1@s uk-child-width-1-2@m uk-child-width-1-3@l uk-text-center" data-uk-grid>
                 {productosFiltrados.map(p => (
                     <div className="producto" key={p.id}>

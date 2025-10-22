@@ -1,3 +1,12 @@
+.titulo-productos {
+    text-align: center;
+    color: #C98A40;
+    font-weight: bold;
+    font-size: 55px;
+    padding-top: 40px;
+    padding-bottom: 30px;
+}
+
 .products {
     justify-content: center;
     gap: 10px;
@@ -106,3 +115,4 @@
     height: 100%; 
     
 }
+
