@@ -36,7 +36,7 @@ function Footer() {
       <footer className="uk-section uk-section-secondary uk-section-xsmall uk-text-center">
         <div className="uk-container">
           <p className="uk-text-small uk-text-muted">
-            <Link to="/preguntas-frecuentes" className="uk-link-reset">
+            <Link to="/preguntas-frecuentes" className="uk-link-reset" >
               Preguntas Frecuentes
             </Link>
           </p>

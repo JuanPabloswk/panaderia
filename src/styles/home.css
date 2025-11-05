@@ -2,7 +2,7 @@ body{
     background-color: #F5F5F5;
 }
 .info-cards {
-    text-align: left;
+    text-align: center;
 }
 
 .info-cards h1 {
@@ -22,7 +22,7 @@ body{
     margin: 40px;
     align-items: center;
     display: flex;
-    justify-items: center;
+    text-align: left;
     gap: 0;
 }
 
@@ -35,7 +35,7 @@ body{
 
 .home-card p {
     font-size: 16px;
-    text-align: justify;
+    text-align: center;
 }
 
 .home-card h3 {
