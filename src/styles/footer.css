@@ -10,11 +10,18 @@
 
 .general-mapa {
     margin-top: 60px;
-    display: flex;
 }
 .mapa-info {
-    width: 500px;
     text-align: left;
-    margin-left: 50px;
-    padding: 2px;
+    padding: 20px;
+}
+
+.mapa-info h2 {
+    color: white;
+    margin-bottom: 15px;
+}
+
+.mapa-info p {
+    color: rgba(255, 255, 255, 0.9);
+    margin: 8px 0;
 }

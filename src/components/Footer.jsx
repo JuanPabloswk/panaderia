@@ -1,6 +1,4 @@
 import '../styles/footer.css'
-import Map from './Map.jsx';
-// 1. Importar el componente Link
 import { Link } from 'react-router-dom';
 
 function Footer() {
@@ -12,21 +10,19 @@ function Footer() {
             <span>Encuéntranos</span>
           </h2>
           <div className='general-mapa' data-uk-grid>
-            
-            <Map />
-
-            <div className='mapa-info'>
+            <div className='mapa-info uk-width-1-2@m'>
               <div>
                 <h2>Bogotá</h2>
                 <p>Avenida calle 127. Barrio Prado veraniego</p>
                 <p>Avenida Caracas. Barrio Chapinero</p>
               </div>
-              <div style={{marginTop: "70px"}}>
+            </div>
+            <div className='mapa-info uk-width-1-2@m'>
+              <div>
                 <h2>Neiva</h2>
                 <p>Centro Comercial San Pedro Plaza</p>
                 <p>Carrera 5 # 12-41 Barrio Sevilla</p>
               </div>
-              
             </div>
           </div> 
         </div>

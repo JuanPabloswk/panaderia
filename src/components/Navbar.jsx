@@ -3,12 +3,16 @@ import UIkit from "uikit";
 import Icons from "uikit/dist/js/uikit-icons";
 import { Link, NavLink } from "react-router-dom";
 import logo from "../assets/logo.png";
+import carritoIcon from "../assets/carrito.png";
 import '../styles/nav.css';
+import { useCart } from '../context/CartContext';
 
 UIkit.use(Icons);
 
 function Navbar() {
     const categorias = ['desayunos', 'panaderia', 'pasteleria', 'bebidas'];
+    const { cart } = useCart();
+    const totalItems = cart.reduce((total, item) => total + item.cantidad, 0);
   return (
     <nav className="uk-navbar-container uk-navbar-transparent uk-position-fixed uk-position-top uk-width-1-1" data-uk-navbar="true">
         <div className="uk-container">
@@ -44,7 +48,15 @@ function Navbar() {
                         <ul className="uk-navbar-nav">
                             <li><NavLink to="/Contacto" className="uk-link-reset">Contáctanos</NavLink></li>
                             <li><NavLink to="/Nosotros" className="uk-link-reset">Nuestra historia</NavLink></li>
-                            <li><NavLink to="/checkout" className="uk-link-reset"><span className="uk-icon uk-icon-shopping-cart"></span></NavLink></li>
+                            <li>
+                                <NavLink to="/checkout" className="uk-link-reset cart-link" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                    <img src={carritoIcon} alt="Carrito" style={{ width: '24px', height: '24px', objectFit: 'contain' }} />
+                                    <span>Carrito</span>
+                                    {totalItems > 0 && (
+                                        <span className="cart-badge">{totalItems}</span>
+                                    )}
+                                </NavLink>
+                            </li>
                         </ul>
                     </div>
                 </div>

@@ -5,14 +5,16 @@ import Contacto from './pages/Contacto';
 import Navbar from './components/Navbar';
 import Products from './pages/Products';
 import PreguntasFrecuentes from './pages/PreguntasFrecuentes';
+import Checkout from './pages/Checkout';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
+import { CartProvider } from './context/CartContext';
 import "leaflet/dist/leaflet.css";
 
  
 function App() {
   return (
-  <>
+  <CartProvider>
     <ScrollToTop />
     
     <Navbar />
@@ -24,10 +26,11 @@ function App() {
         <Route path="/Productos/:categoria" element={<Products />} />
         <Route path="/Productos" element={<Products />} />
         <Route path="/preguntas-frecuentes" element={<PreguntasFrecuentes />} />
+        <Route path="/checkout" element={<Checkout />} />
     </Routes>
     <Footer />
 
-  </>
+  </CartProvider>
   );
 }
 
