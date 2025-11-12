@@ -51,7 +51,6 @@ function Navbar() {
                             <li>
                                 <NavLink to="/checkout" className="uk-link-reset cart-link" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                                     <img src={carritoIcon} alt="Carrito" style={{ width: '24px', height: '24px', objectFit: 'contain' }} />
-                                    <span>Carrito</span>
                                     {totalItems > 0 && (
                                         <span className="cart-badge">{totalItems}</span>
                                     )}
