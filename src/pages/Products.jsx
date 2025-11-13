@@ -59,10 +59,10 @@ function Modal ({ producto }) {
                         <div className='modal-content-right uk-padding'>
                             <h1 className="uk-modal-title">{producto?.nombre}</h1>
                             <p>{producto?.descripcion}</p>
-                            <p className="uk-text-right">
-                                <button className="uk-button uk-button-default uk-modal-close" type="button">Cancel</button>
-                                <button className="uk-button uk-button-primary" type="button">Save</button>
-                            </p>
+                            <div className="modal-buttons">
+                                <button className="uk-button uk-button-default uk-modal-close" type="button">Cancelar</button>
+                                <button className="uk-button uk-button-primary" type="button">Guardar</button>
+                            </div>
                         </div>
                     </div>
                 </div>
