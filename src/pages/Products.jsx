@@ -1,8 +1,9 @@
-import {useState, useEffect} from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useParams } from 'react-router-dom'; 
 import { productos as todosLosProductos } from '../data/productos.js';
 import '../styles/products.css';
 import UIkit from 'uikit';
+import { useCart } from '../context/CartContext';
 
 function Product({ producto, onSelect }) {
     const [imgUrl, setImgUrl] = useState("");
@@ -43,7 +44,79 @@ function Product({ producto, onSelect }) {
     );
 }
 
-function Modal ({ producto }) {
+function Modal ({ producto, onAddToCart }) {
+    const buttonRef = useRef(null);
+    
+    useEffect(() => {
+        const btn = buttonRef.current;
+        if (btn && producto && onAddToCart) {
+            const handleClick = (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                const productoParaCarrito = {
+                    id: producto.id,
+                    nombre: producto.nombre,
+                    descripcion: producto.descripcion,
+                    precio: producto.precio,
+                    queryImage: producto.queryImage,
+                    categoria: producto.categoria,
+                    imgUrl: producto.imgUrl
+                };
+                
+                onAddToCart(productoParaCarrito);
+                
+                UIkit.modal("#modal-producto").hide();
+                
+                setTimeout(() => {
+                    UIkit.notification({
+                        message: `✓ ${producto.nombre} agregado al carrito`,
+                        status: 'success',
+                        pos: 'top-center',
+                        timeout: 3000
+                    });
+                }, 300);
+            };
+            
+            btn.addEventListener('click', handleClick);
+            return () => {
+                btn.removeEventListener('click', handleClick);
+            };
+        }
+    }, [producto, onAddToCart]);
+    
+    const handleSave = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        if (!producto || !onAddToCart) {
+            return;
+        }
+        
+        const productoParaCarrito = {
+            id: producto.id,
+            nombre: producto.nombre,
+            descripcion: producto.descripcion,
+            precio: producto.precio,
+            queryImage: producto.queryImage,
+            categoria: producto.categoria,
+            imgUrl: producto.imgUrl
+        };
+        
+        onAddToCart(productoParaCarrito);
+        
+        UIkit.modal("#modal-producto").hide();
+        
+        setTimeout(() => {
+            UIkit.notification({
+                message: `✓ ${producto.nombre} agregado al carrito`,
+                status: 'success',
+                pos: 'top-center',
+                timeout: 3000
+            });
+        }, 300);
+    };
+
     return (
         <div>
             <div id="modal-producto" data-uk-modal>
@@ -59,9 +132,32 @@ function Modal ({ producto }) {
                         <div className='modal-content-right uk-padding'>
                             <h1 className="uk-modal-title">{producto?.nombre}</h1>
                             <p>{producto?.descripcion}</p>
-                            <div className="modal-buttons">
-                                <button className="uk-button uk-button-default uk-modal-close" type="button">Cancelar</button>
-                                <button className="uk-button uk-button-primary" type="button">Guardar</button>
+                            {producto?.precio && (
+                                <p style={{ fontSize: '24px', fontWeight: 'bold', color: '#584125', marginTop: '20px' }}>
+                                    {producto.precio.toLocaleString('es-CO', { 
+                                        style: 'currency', 
+                                        currency: 'COP',
+                                        minimumFractionDigits: 0,
+                                        maximumFractionDigits: 0
+                                    })}
+                                </p>
+                            )}
+                            <div className="uk-text-right" style={{ marginTop: '20px' }}>
+                                <button 
+                                    className="uk-button uk-button-default uk-modal-close" 
+                                    type="button"
+                                >
+                                    Cancelar
+                                </button>
+                                <button 
+                                    ref={buttonRef}
+                                    className="uk-button uk-button-primary" 
+                                    type="button"
+                                    onClick={handleSave}
+                                    style={{ marginLeft: '10px' }}
+                                >
+                                    Agregar al carrito
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -75,6 +171,7 @@ export default function Products() {
     const { categoria } = useParams();
     const [productosFiltrados, setProductosFiltrados] = useState([]);
     const [productoSeleccionado, setProductoSeleccionado] = useState(null);
+    const { addToCart } = useCart();
 
     useEffect(() => {
         if(categoria) {
@@ -102,7 +199,7 @@ export default function Products() {
                     </div>
                 ))}
             </div>
-            <Modal producto={productoSeleccionado} />
+            <Modal producto={productoSeleccionado} onAddToCart={addToCart} />
         </div>
     )
 }

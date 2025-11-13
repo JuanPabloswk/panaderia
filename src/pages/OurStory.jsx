@@ -2,7 +2,6 @@ import panadero from "../assets/panaderoHorneandoPan.jpg";
 import mujeresPan from "../assets/mujeresPan.jpg";
 import fondoP from "../assets/fondoPanadero.jpg";
 import '../styles/ourStory.css'
-import Gallery3D from "../components/Gallery3D";
 function OurStory() {
   return (
     <div>
@@ -180,71 +179,6 @@ function OurStory() {
                 </div>
             </div>
         </section>
-
-        {/* Galería */}
-        <section className="uk-section uk-section-default uk-text-center">
-            <div className="uk-container">
-                <h2 className="uk-heading-medium uk-text-bold" style={{ color: "#ffffffff" }}>
-                NUESTRA GALLERIA
-                </h2>
-                <p className="uk-text-lead" style={{ color: "#d4ae8dff" }}>
-                Fotos de nuestras deliciosas y creativas creaciones
-                </p>
-
-                {/* Imagenes */}
-                <div
-                className="uk-grid-small uk-child-width-1-3@s uk-child-width-1-3@m uk-flex-center"
-                data-uk-grid
-                >
-                    <div>
-                        <img
-                        src="https://preview.milingona.co/themes/bakery/shop/wp-content/uploads/2017/12/img-15.jpg"
-                        alt="Pan artesanal"
-                        className="uk-border-rounded uk-box-shadow-hover-large"
-                        />
-                    </div>
-                    <div>
-                        <img
-                        src="https://preview.milingona.co/themes/bakery/shop/wp-content/uploads/2017/12/img-13.jpg"
-                        alt="Pan rústico"
-                        className="uk-border-rounded uk-box-shadow-hover-large"
-                        />
-                    </div>
-                    <div>
-                        <img
-                        src="https://preview.milingona.co/themes/bakery/shop/wp-content/uploads/2017/12/img-5.jpg"
-                        alt="Croissants"
-                        className="uk-border-rounded uk-box-shadow-hover-large"
-                        />
-                    </div>
-                    <div>
-                        <img
-                        src="https://preview.milingona.co/themes/bakery/shop/wp-content/uploads/2017/12/img-20.jpg"
-                        alt="Pasteles"
-                        className="uk-border-rounded uk-box-shadow-hover-large"
-                        />
-                    </div>
-                    <div>
-                        <img
-                        src="https://preview.milingona.co/themes/bakery/shop/wp-content/uploads/2017/12/img-12.jpg"
-                        alt="Muffins"
-                        className="uk-border-rounded uk-box-shadow-hover-large"
-                        />
-                    </div>
-                    <div>
-                        <img
-                        src="https://preview.milingona.co/themes/bakery/shop/wp-content/uploads/2017/12/img-1.jpg"
-                        alt="Pan fresco"
-                        className="uk-border-rounded uk-box-shadow-hover-large"
-                        />
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <Gallery3D />
-
-
     </div>
   )
 }
