@@ -1,5 +1,5 @@
 
-.uk-section {
+/*.uk-section {
     background-color: #584125;
 }
 
@@ -24,4 +24,114 @@
 .mapa-info p {
     color: rgba(255, 255, 255, 0.9);
     margin: 8px 0;
+}*/
+
+.footer-main-section {
+    background-color: #584125;
+    color: white;
+    padding-top: 30px !important; 
+    padding-bottom: 30px !important; 
+}
+
+.uk-heading-line {
+    margin-bottom: 40px !important; 
+}
+
+.uk-heading-line > span {
+    color: white;
+    font-weight: bolder;
+}
+
+.uk-heading-line > span::before,
+.uk-heading-line > span::after {
+    border-top-color: rgba(255, 255, 255, 0.4);
+}
+
+.footer-column h3 {
+    color: #f7d08f;
+    margin-bottom: 15px; 
+    font-size: 1.2rem;
+}
+
+.footer-column > .uk-text-left {
+    margin-top: 0 !important;
+}
+
+.footer-column h4 {
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 5px !important;
+    margin-top: 15px;
+}
+
+.footer-column h4:nth-of-type(2) {
+    margin-top: 10px !important; 
+}
+
+.footer-column h4:first-of-type {
+    margin-top: 0 !important; 
+}
+
+.footer-column p {
+    color: rgba(255, 255, 255, 0.9);
+    margin: 3px 0;
+}
+
+.footer-links {
+    margin-top: 0 !important;
+}
+
+.footer-links li {
+    margin-bottom: 5px;
+}
+
+.footer-links a {
+    color: rgba(255, 255, 255, 0.8);
+    transition: color 0.2s ease-in-out;
+}
+
+.footer-links a:hover {
+    color: #f7d08f;
+    text-decoration: underline;
+}
+
+
+.footer-faq-link {
+    color: #ffd700 !important;
+    font-size: 1rem !important;
+    text-transform: uppercase;
+    padding: 5px 0;
+    display: inline-block;
+    border-bottom: 2px solid #ffd700;
+}
+
+.social-icon {
+    background-color: #8b5e34;
+    color: white;
+    transition: background-color 0.2s ease;
+}
+
+.social-icon:hover {
+    background-color: #a0522d;
+    color: white;
+}
+
+.footer-copyright {
+    background-color: #4a381e !important; 
+}
+
+@media (max-width: 960px) {
+    .footer-grid {
+        text-align: center;
+    }
+    .uk-text-left {
+        text-align: center !important;
+    }
+    .footer-column {
+        margin-bottom: 30px;
+    }
+    .uk-flex-left {
+        justify-content: center !important;
+    }
 }

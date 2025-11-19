@@ -4,6 +4,17 @@
     padding-top: 20px;
 }
 
+
+.faq-container .uk-heading-line > span {
+    color: #633424 !important; 
+}
+
+.uk-heading-line > span::before,
+.uk-heading-line > span::after {
+    border-top-color: #a0522d; 
+}
+
+
 .faq-title {
     font-size: 1.25rem; 
     font-weight: 600;
@@ -23,9 +34,4 @@
     font-size: 1.05rem;
     line-height: 1.6;
     color: #6d4b40; 
-}
-
-.uk-heading-line > span::before,
-.uk-heading-line > span::after {
-    border-top-color: #a0522d; 
 }
