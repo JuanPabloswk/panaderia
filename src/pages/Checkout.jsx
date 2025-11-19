@@ -47,7 +47,7 @@ function Checkout() {
             <p className="uk-text-lead" style={{ color: '#584125' }}>
               Tu carrito está vacío
             </p>
-            <a href="/Productos" className="uk-button uk-button-primary" style={{ marginTop: '20px' }}>
+            <a href="/Productos" className="uk-button uk-button-primary" style={{ marginTop: '20px', borderRadius: '25px' }}>
               Ver Productos
             </a>
           </div>
@@ -106,7 +106,7 @@ function Checkout() {
                             </button>
                           </div>
                           <button
-                            className="uk-button uk-button-small uk-button-danger"
+                            className="uk-button uk-button-small uk-button-danger" style={{borderRadius: '25px'}}
                             onClick={() => {
                               removeFromCart(item.id);
                               UIkit.notification({
@@ -191,7 +191,7 @@ function Checkout() {
                 <button
                   className="uk-button uk-button-primary uk-width-1-1"
                   onClick={handleCheckout}
-                  style={{ marginBottom: '10px' }}
+                  style={{ marginBottom: '10px', borderRadius: '25px' }}
                 >
                   Proceder al Pago
                 </button>

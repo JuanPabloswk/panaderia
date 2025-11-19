@@ -10,7 +10,7 @@ function Product({ producto, onSelect }) {
     useEffect(() => {
         fetch(`https://api.unsplash.com/search/photos?query=${producto.queryImage}&client_id=lN-NVtpQ8v2ziR294YR2wlgX_HzU-s4wadfPIy1-DMU&per_page=1`)
         .then(response => response.json())
-        .then(data => setImgUrl(data.results[0].urls.small))
+        .then(data => setImgUrl(data.results[0].urls.regular))
     }, [producto.queryImage]);
 
     const handleClick = () => {
@@ -154,7 +154,7 @@ function Modal ({ producto, onAddToCart }) {
                                     className="uk-button uk-button-primary" 
                                     type="button"
                                     onClick={handleSave}
-                                    style={{ marginLeft: '10px' }}
+                                    style={{ marginLeft: '10px', borderRadius: '25px' }}
                                 >
                                     Agregar al carrito
                                 </button>

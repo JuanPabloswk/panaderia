@@ -2,37 +2,37 @@ export const productos = [
     //desayunos
     {
         id: 1,
-        nombre: "Huevos pericos",
-        descripcion: "Huevos revueltos con cebolla, tomate y cilantro, acompañados de arepas y café.",
+        nombre: "Omelette",
+        descripcion: "Omelette de huevos con tomate y cebolla, acompañado de arepas y café.",
         precio: 15000,
-        queryImage: 'eggs with tomato',
+        queryImage: 'omelette',
         categoria: 'desayunos'
     },
 
     {
         id: 2,
-        nombre: "Huevos rancheros",
-        descripcion: "Huevos revueltos con salchicha y queso, acompañados de arepas y café.",
+        nombre: "Huevos revueltos",
+        descripcion: "Huevos revueltos, acompañados de arepas y café.",
         precio: 13000,
-        queryImage: 'eggs with sausage',
+        queryImage: 'scrambled eggs',
         categoria: 'desayunos'
     },
 
     {
         id: 3,
-        nombre: "Caldo de pollo",
-        descripcion: "Caldo de pollo con verduras, acompañado de arroz y aguacate.",
+        nombre: "Sopa de tomate",
+        descripcion: "Sopa de tomate casera, acompañada de pan tostado.",
         precio: 10000,
-        queryImage: 'chicken soup',
+        queryImage: 'tomato soup',
         categoria: 'desayunos'
     },
 
     {
         id: 4,
-        nombre: "Calentado",
-        descripcion: "Calentado de arroz con carne, acompañado de huevo frito y aguacate.",
+        nombre: "Sandwich",
+        descripcion: "Sandwich de jamón, queso, tomate y lechuga, acompañado de papas fritas.",
         precio: 20000,
-        queryImage: 'rice with bean',
+        queryImage: 'sandwich',
         categoria: 'desayunos'
     },
 
@@ -40,10 +40,10 @@ export const productos = [
 
     {
         id: 5,
-        nombre: "Almojabana",
-        descripcion: "Pan de queso típico colombiano, ideal para acompañar con café o chocolate caliente.",
+        nombre: "Pan de masa madre",
+        descripcion: "Pan artesanal hecho con masa madre, ideal para acompañar con mantequilla o mermelada.",
         precio: 3000,
-        queryImage: 'pan de queso',
+        queryImage: 'bread',
         categoria: 'panaderia'
     },
 
@@ -67,7 +67,7 @@ export const productos = [
 
     {
         id: 8,
-        nombre: "Croissant de jamón y queso",
+        nombre: "Croissant con jamón y queso",
         descripcion: "Pan francés hojaldrado, relleno de jamón y queso, perfecto para un desayuno ligero o una merienda.",
         precio: 6000,
         queryImage: 'ham and cheese croissant',
@@ -76,7 +76,7 @@ export const productos = [
 
     {
         id: 9,
-        nombre: "Mojicon con queso y arequipe",
+        nombre: "Mojicon",
         descripcion: "Pan dulce colombiano, relleno de queso y arequipe, ideal para acompañar con café o chocolate caliente.",
         precio: 4000,
         queryImage: 'bread with sugar',
@@ -114,10 +114,10 @@ export const productos = [
 
     {
         id: 13,
-        nombre: "Torta de amapola",
-        descripcion: "Bizcocho de amapola, ideal para acompañar con café o chocolate caliente.",
+        nombre: "Torta red velvet",
+        descripcion: "Bizcocho de terciopelo rojo con crema de queso, ideal para acompañar con café o chocolate caliente.",
         precio: 12000,
-        queryImage: 'torta de amapola',
+        queryImage: 'red velvet cake',
         categoria: 'pasteleria'
     },
 
@@ -128,7 +128,7 @@ export const productos = [
         nombre: "Café americano",
         descripcion: "Café filtrado, servido caliente en taza.",
         precio: 3000,
-        queryImage: 'café americano',
+        queryImage: 'cafe americano',
         categoria: 'bebidas'
     },
 
@@ -146,16 +146,16 @@ export const productos = [
         nombre: "Chocolate caliente",
         descripcion: "Bebida caliente de chocolate, ideal para acompañar con pan.",
         precio: 5000,
-        queryImage: 'chocolate caliente',
+        queryImage: 'hot chocolate',
         categoria: 'bebidas'
     },
 
     {
         id: 17,
-        nombre: "Aguapanela",
-        descripcion: "Bebida caliente de panela disuelta en agua, ideal para acompañar con pan.",
+        nombre: "Agua en botella",
+        descripcion: "Agua pura en botella de 500ml.",
         precio: 2000,
-        queryImage: 'coffe with panela',
+        queryImage: 'bottle of water',
         categoria: 'bebidas'
     },
 

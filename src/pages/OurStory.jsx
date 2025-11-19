@@ -112,15 +112,6 @@ function OurStory() {
                             de 8:30am a 3pm, con excepción de los días festivos.
                         </p>
 
-                        <button className="uk-button uk-button-default"
-                            style={{
-                            border: "1px solid #4a2c07",
-                            color: "#4a2c07",
-                            fontWeight: "bold",
-                            marginTop: "10px",
-                            }}>
-                            MIRA EL VIDEO
-                        </button>
                     </div>
                 </div>
 
@@ -153,18 +144,6 @@ function OurStory() {
                         </p>
 
 
-                        
-                        <button
-                            className="uk-button uk-button-default"
-                            style={{
-                            border: "1px solid #4a2c07",
-                            color: "#4a2c07",
-                            fontWeight: "bold",
-                            marginTop: "10px",
-                            }}
-                        >
-                            LEE LA HISTORIA COMPLETA
-                        </button>
                     </div>
 
                     {/* Imagen */}

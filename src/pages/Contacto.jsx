@@ -51,7 +51,7 @@ function Contacto() {
                 ></textarea>
               </div>
 
-              <button className="uk-button uk-button-primary uk-width-1-1">
+              <button className="uk-button uk-button-primary uk-width-1-1" style={{borderRadius: '25px'}}>
                 ENVIAR MENSAJE
               </button>
             </form>
