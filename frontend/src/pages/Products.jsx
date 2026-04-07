@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { productos as todosLosProductos } from '../data/productos.js';
 import '../styles/products.css';
 import UIkit from 'uikit';
-import { useCart } from '../context/CartContext';
+import { useCart } from '../context/CartContext.jsx';
 
 function Product({ producto, onSelect }) {
     const [imgUrl, setImgUrl] = useState("");
