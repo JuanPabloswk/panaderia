@@ -38,3 +38,6 @@ lerna-debug.log*
 
 # --- Archivos del Sistema / SO ---
 Thumbs.db
+
+actividades_de_desarrollo.txt
+AGENTS.md
