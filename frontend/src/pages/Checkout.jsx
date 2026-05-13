@@ -1,9 +1,14 @@
+import { Link } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
+import { API_BASE_URL } from '../config/api.js';
 import '../styles/checkout.css';
 import UIkit from 'uikit';
 
 function Checkout() {
   const { cart, removeFromCart, updateQuantity, clearCart, getTotalPrice } = useCart();
+  const { isAuthenticated, authHeader, logout, user } = useAuth();
+  const canCheckout = isAuthenticated && user?.tipo === 'cliente';
 
   const handleQuantityChange = (productId, newQuantity, productName) => {
     if (newQuantity < 1) {
@@ -19,7 +24,7 @@ function Checkout() {
     }
   };
 
-  const handleCheckout = () => {
+  const handleCheckout = async () => {
     if (cart.length === 0) {
       UIkit.notification({
         message: 'Tu carrito está vacío',
@@ -28,14 +33,73 @@ function Checkout() {
       });
       return;
     }
-    
-    UIkit.notification({
-      message: '¡Gracias por tu compra! En un futuro implementaremos el proceso de pago.',
-      status: 'success',
-      pos: 'top-center',
-      timeout: 5000
-    });
-    
+    if (!isAuthenticated) {
+      UIkit.notification({
+        message: 'Debes iniciar sesión para finalizar la compra',
+        status: 'warning',
+        pos: 'top-center',
+        timeout: 4000
+      });
+      return;
+    }
+    if (user?.tipo !== 'cliente') {
+      UIkit.notification({
+        message:
+          'Las cuentas de empleado no pueden finalizar pedidos en la tienda. Usa una cuenta de cliente.',
+        status: 'warning',
+        pos: 'top-center',
+        timeout: 5000
+      });
+      return;
+    }
+
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/pedidos`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...authHeader(),
+        },
+        body: JSON.stringify({ items: cart })
+      });
+      const data = await res.json().catch(() => ({}));
+
+      if (res.status === 401) {
+        logout();
+        UIkit.notification({
+          message: data.message || 'Sesión expirada. Vuelve a iniciar sesión.',
+          status: 'warning',
+          pos: 'top-center',
+          timeout: 5000
+        });
+        return;
+      }
+
+      if (!res.ok) {
+        UIkit.notification({
+          message: data.message || 'No se pudo registrar el pedido',
+          status: 'danger',
+          pos: 'top-center',
+          timeout: 5000
+        });
+        return;
+      }
+
+      UIkit.notification({
+        message: data.message || '¡Gracias por tu compra!',
+        status: 'success',
+        pos: 'top-center',
+        timeout: 5000
+      });
+      clearCart();
+    } catch {
+      UIkit.notification({
+        message: 'No hay conexión con el servidor. Revisa que el backend esté en marcha.',
+        status: 'danger',
+        pos: 'top-center',
+        timeout: 5000
+      });
+    }
   };
 
   if (cart.length === 0) {
@@ -60,6 +124,25 @@ function Checkout() {
     <div className="checkout-container">
       <div className="uk-container uk-margin-large-top uk-margin-large-bottom">
         <h1 className="checkout-title">Carrito de Compras</h1>
+
+        {!isAuthenticated && (
+          <div className="uk-alert-primary uk-margin-medium-bottom" data-uk-alert>
+            <p className="uk-margin-remove">
+              Para <strong>finalizar la compra</strong> debes{' '}
+              <Link to="/login?redirect=/checkout">iniciar sesión</Link>.
+              ¿No tienes cuenta?{' '}
+              <Link to="/registro">Crear cuenta</Link>.
+            </p>
+          </div>
+        )}
+        {isAuthenticated && user?.tipo === 'empleado' && (
+          <div className="uk-alert-warning uk-margin-medium-bottom" data-uk-alert>
+            <p className="uk-margin-remove">
+              Has iniciado sesión como empleado. Para comprar en la tienda necesitas una{' '}
+              <Link to="/registro">cuenta de cliente</Link> (correo distinto al corporativo si aplica).
+            </p>
+          </div>
+        )}
         
         <div className="uk-grid-large" data-uk-grid>
           {/* Lista de productos */}
@@ -191,7 +274,15 @@ function Checkout() {
                 <button
                   className="uk-button uk-button-primary uk-width-1-1"
                   onClick={handleCheckout}
+                  disabled={!canCheckout}
                   style={{ marginBottom: '10px', borderRadius: '25px' }}
+                  title={
+                    !isAuthenticated
+                      ? 'Inicia sesión para pagar'
+                      : user?.tipo !== 'cliente'
+                        ? 'Solo cuentas de cliente pueden pagar aquí'
+                        : ''
+                  }
                 >
                   Proceder al Pago
                 </button>

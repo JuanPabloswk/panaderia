@@ -6,6 +6,7 @@ front/node_modules/
 # --- Variables de Entorno (Seguridad) ---
 .env
 backend/.env
+frontend/.env
 front/.env
 *.local
 

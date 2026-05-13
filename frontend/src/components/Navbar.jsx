@@ -1,17 +1,19 @@
 import "uikit/dist/css/uikit.min.css";
 import UIkit from "uikit";
 import Icons from "uikit/dist/js/uikit-icons";
-import { Link, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import logo from "../assets/logo.png";
 import carritoIcon from "../assets/carrito.png";
 import '../styles/nav.css';
 import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
 
 UIkit.use(Icons);
 
 function Navbar() {
     const categorias = ['desayunos', 'panaderia', 'pasteleria', 'bebidas'];
     const { cart } = useCart();
+    const { isAuthenticated, user, logout } = useAuth();
     const totalItems = cart.reduce((total, item) => total + item.cantidad, 0);
   return (
     <nav className="uk-navbar-container uk-navbar-transparent uk-position-fixed uk-position-top uk-width-1-1" data-uk-navbar="true">
@@ -48,6 +50,26 @@ function Navbar() {
                         <ul className="uk-navbar-nav">
                             <li><NavLink to="/Contacto" className="uk-link-reset">Contáctanos</NavLink></li>
                             <li><NavLink to="/Nosotros" className="uk-link-reset">Nuestra historia</NavLink></li>
+                            <li>
+                                {isAuthenticated ? (
+                                    <>
+                                        <span className="uk-text-small uk-margin-small-right" style={{ color: '#584125' }}>
+                                            {[user?.primerNombre, user?.apellido].filter(Boolean).join(' ').trim() ||
+                                                user?.username ||
+                                                user?.email}
+                                        </span>
+                                        <button
+                                            type="button"
+                                            className="uk-button uk-button-text uk-link-reset"
+                                            onClick={() => logout()}
+                                        >
+                                            Salir
+                                        </button>
+                                    </>
+                                ) : (
+                                    <NavLink to="/login" className="uk-link-reset">Entrar</NavLink>
+                                )}
+                            </li>
                             <li>
                                 <NavLink to="/checkout" className="uk-link-reset cart-link" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                                     <img src={carritoIcon} alt="Carrito" style={{ width: '24px', height: '24px', objectFit: 'contain' }} />

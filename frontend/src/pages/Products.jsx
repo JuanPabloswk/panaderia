@@ -1,20 +1,15 @@
 import { useState, useEffect, useRef } from 'react'
 import { useParams } from 'react-router-dom'; 
-import { productos as todosLosProductos } from '../data/productos.js';
+import { API_BASE_URL } from '../config/api.js';
 import '../styles/products.css';
 import UIkit from 'uikit';
 import { useCart } from '../context/CartContext.jsx';
 
 function Product({ producto, onSelect }) {
-    const [imgUrl, setImgUrl] = useState("");
-    useEffect(() => {
-        fetch(`https://api.unsplash.com/search/photos?query=${producto.queryImage}&client_id=lN-NVtpQ8v2ziR294YR2wlgX_HzU-s4wadfPIy1-DMU&per_page=1`)
-        .then(response => response.json())
-        .then(data => setImgUrl(data.results[0].urls.regular))
-    }, [producto.queryImage]);
+    const imgUrl = (producto.imagen || '').trim();
 
     const handleClick = () => {
-        const productoImagen = {...producto, imgUrl: imgUrl}; 
+        const productoImagen = { ...producto, imgUrl: imgUrl };
         onSelect(productoImagen);
     }
     return (
@@ -23,7 +18,7 @@ function Product({ producto, onSelect }) {
                 {imgUrl ? (
                     <img src={imgUrl} alt={producto.nombre} />
                 ) : (
-                    <div className="uk-placeholder uk-text-center">Cargando imagen...</div>
+                    <div className="uk-placeholder uk-text-center">Sin imagen</div>
                 )}
             </div>
             <div className="uk-card-body">
@@ -59,9 +54,10 @@ function Modal ({ producto, onAddToCart }) {
                     nombre: producto.nombre,
                     descripcion: producto.descripcion,
                     precio: producto.precio,
-                    queryImage: producto.queryImage,
                     categoria: producto.categoria,
-                    imgUrl: producto.imgUrl
+                    categoriaSlug: producto.categoriaSlug,
+                    imagen: producto.imagen,
+                    imgUrl: producto.imagen || '',
                 };
                 
                 onAddToCart(productoParaCarrito);
@@ -98,9 +94,10 @@ function Modal ({ producto, onAddToCart }) {
             nombre: producto.nombre,
             descripcion: producto.descripcion,
             precio: producto.precio,
-            queryImage: producto.queryImage,
             categoria: producto.categoria,
-            imgUrl: producto.imgUrl
+            categoriaSlug: producto.categoriaSlug,
+            imagen: producto.imagen,
+            imgUrl: producto.imagen || '',
         };
         
         onAddToCart(productoParaCarrito);
@@ -123,10 +120,10 @@ function Modal ({ producto, onAddToCart }) {
                 <div className="uk-modal-dialog uk-margin-auto-vertical uk-modal-body modal-custom-grid">
                     <div className="uk-grid-collapse uk-child-width-1-2@m uk-flex-middle" data-uk-grid>
                         <div className="imagen-modal-contenedor">
-                            {producto?.imgUrl ? (
-                                <img src={producto.imgUrl} alt={producto?.nombre} />
+                            {producto?.imagen ? (
+                                <img src={producto.imagen} alt={producto?.nombre} />
                             ) : (
-                                <div className="uk-placeholder uk-text-center">Cargando imagen...</div>
+                                <div className="uk-placeholder uk-text-center">Sin imagen</div>
                             )}
                         </div>
                         <div className='modal-content-right uk-padding'>
@@ -169,29 +166,101 @@ function Modal ({ producto, onAddToCart }) {
 
 export default function Products() {
     const { categoria } = useParams();
+    const [fuenteProductos, setFuenteProductos] = useState([]);
     const [productosFiltrados, setProductosFiltrados] = useState([]);
     const [productoSeleccionado, setProductoSeleccionado] = useState(null);
+    const [catalogoEstado, setCatalogoEstado] = useState('loading');
+    const [retryTick, setRetryTick] = useState(0);
     const { addToCart } = useCart();
 
     useEffect(() => {
-        if(categoria) {
-            const productos = todosLosProductos.filter(
-                (p) => p.categoria.toLowerCase() === categoria.toLowerCase()
-            );
-            setProductosFiltrados(productos);
+        let cancelado = false;
+        setCatalogoEstado('loading');
+        fetch(`${API_BASE_URL}/api/productos`)
+            .then((r) => (r.ok ? r.json() : Promise.reject(new Error('api'))))
+            .then((data) => {
+                if (cancelado) return;
+                const lista = Array.isArray(data.productos) ? data.productos : [];
+                if (lista.length === 0) {
+                    setFuenteProductos([]);
+                    setCatalogoEstado('error');
+                    return;
+                }
+                setFuenteProductos(lista);
+                setCatalogoEstado('ok');
+            })
+            .catch(() => {
+                if (!cancelado) {
+                    setFuenteProductos([]);
+                    setCatalogoEstado('error');
+                }
+            });
+        return () => {
+            cancelado = true;
+        };
+    }, [retryTick]);
+
+    useEffect(() => {
+        if (categoria) {
+            const url = categoria.toLowerCase();
+            const lista = fuenteProductos.filter((p) => {
+                const slug = (p.categoriaSlug || '').toLowerCase();
+                const nombreCat = (p.categoria || '').toLowerCase();
+                return slug === url || nombreCat === url;
+            });
+            setProductosFiltrados(lista);
         } else {
-            setProductosFiltrados(todosLosProductos);
+            setProductosFiltrados(fuenteProductos);
         }
-    }, [categoria]);
+    }, [categoria, fuenteProductos]);
 
     const handleSelect = (producto) => {
         setProductoSeleccionado(producto);
         UIkit.modal("#modal-producto").show();
     }
 
+    if (catalogoEstado === 'loading') {
+        return (
+            <div className="uk-container uk-margin-large-top uk-text-center">
+                <h1 className="titulo-productos">Nuestros productos</h1>
+                <p className="uk-text-lead" style={{ color: '#584125' }}>Cargando catálogo…</p>
+            </div>
+        );
+    }
+
+    if (catalogoEstado === 'error') {
+        return (
+            <div className="uk-container uk-margin-large-top uk-text-center">
+                <h1 className="titulo-productos">Nuestros productos</h1>
+                <p className="uk-text-lead uk-margin" style={{ color: '#584125' }}>
+                    No se pudo cargar el catálogo. Comprueba que el backend esté en marcha y que{' '}
+                    <code>MONGODB_URI</code> sea correcto en <code>backend/.env</code>.
+                </p>
+                <button
+                    type="button"
+                    className="uk-button uk-button-primary"
+                    style={{ borderRadius: '25px' }}
+                    onClick={() => setRetryTick((n) => n + 1)}
+                >
+                    Reintentar
+                </button>
+            </div>
+        );
+    }
+
     return (
         <div>
             <h1 className='titulo-productos'>Nuestros productos</h1>
+            {productosFiltrados.length === 0 ? (
+                <div className="uk-container uk-text-center uk-margin">
+                    <p className="uk-text-lead" style={{ color: '#584125' }}>
+                        No hay productos en esta categoría.
+                    </p>
+                    <a href="/Productos" className="uk-button uk-button-default" style={{ borderRadius: '25px' }}>
+                        Ver todas las categorías
+                    </a>
+                </div>
+            ) : (
             <div className="products uk-grid-column-small uk-grid-row-medium uk-child-width-1-1@s uk-child-width-1-2@m uk-child-width-1-3@l uk-text-center" data-uk-grid>
                 {productosFiltrados.map(p => (
                     <div className="producto" key={p.id}>
@@ -199,6 +268,7 @@ export default function Products() {
                     </div>
                 ))}
             </div>
+            )}
             <Modal producto={productoSeleccionado} onAddToCart={addToCart} />
         </div>
     )
