@@ -1,12 +1,6 @@
 import { z } from 'zod';
 
 export const crearClienteSchema = z.object({
-    username: z.string()
-        .min(3, 'El nombre de usuario debe tener al menos 3 caracteres')
-        .max(30, 'El nombre de usuario no puede exceder 30 caracteres')
-        .regex(/^[a-zA-Z0-9]+$/, 'El nombre de usuario solo puede contener letras y números')
-        .trim(),
-
     email: z.string()
         .email('El email debe ser válido')
         .toLowerCase()
@@ -46,13 +40,6 @@ export const crearClienteSchema = z.object({
 });
 
 export const actualizarClienteSchema = z.object({
-    username: z.string()
-        .min(3, 'El nombre de usuario debe tener al menos 3 caracteres')
-        .max(30, 'El nombre de usuario no puede exceder 30 caracteres')
-        .regex(/^[a-zA-Z0-9]+$/, 'El nombre de usuario solo puede contener letras y números')
-        .trim()
-        .optional(),
-
     email: z.string()
         .email('El email debe ser válido')
         .toLowerCase()

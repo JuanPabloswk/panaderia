@@ -29,6 +29,14 @@ export const crearProductoSchema = z.object({
         .optional()
         .default(0),
 
+    peso: z.string()
+        .trim()
+        .optional(),
+
+    ingredientes: z.array(z.string().trim())
+        .optional()
+        .default([]),
+
     categoria: z.string()
         .regex(/^[0-9a-fA-F]{24}$/, 'El ID de categoría debe ser válido')
 });
@@ -63,6 +71,13 @@ export const actualizarProductoSchema = z.object({
     descuento: z.number()
         .min(0, 'El descuento no puede ser menor a 0')
         .max(100, 'El descuento no puede exceder 100')
+        .optional(),
+
+    peso: z.string()
+        .trim()
+        .optional(),
+
+    ingredientes: z.array(z.string().trim())
         .optional(),
 
     disponible: z.boolean().optional(),

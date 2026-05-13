@@ -25,7 +25,26 @@ export const crearPedidoSchema = z.object({
         .default(0),
 
     total: z.number()
-        .min(0, 'El total no puede ser negativo')
+        .min(0, 'El total no puede ser negativo'),
+
+    metodoPago: z.enum(['efectivo', 'tarjeta', 'transferencia', 'nequi'])
+        .optional()
+        .default('efectivo'),
+
+    tipoEntrega: z.enum(['domicilio', 'tienda'])
+        .optional()
+        .default('tienda'),
+
+    direccionEntrega: z.object({
+        calle: z.string().trim().optional(),
+        ciudad: z.string().trim().optional(),
+        departamento: z.string().trim().optional(),
+        zipCode: z.string().trim().optional(),
+        pais: z.string().trim().optional(),
+        referencia: z.string().trim().optional()
+    }).optional(),
+
+    notasEspeciales: z.string().trim().optional()
 });
 
 export const actualizarPedidoSchema = z.object({
@@ -34,7 +53,15 @@ export const actualizarPedidoSchema = z.object({
     empleado: z.string()
         .regex(/^[0-9a-fA-F]{24}$/, 'El ID de empleado debe ser válido')
         .nullable()
-        .optional()
+        .optional(),
+
+    metodoPago: z.enum(['efectivo', 'tarjeta', 'transferencia', 'nequi']).optional(),
+
+    tipoEntrega: z.enum(['domicilio', 'tienda']).optional(),
+
+    notasEspeciales: z.string().trim().optional(),
+
+    fechaEntrega: z.string().datetime().optional()
 }).refine(obj => Object.keys(obj).length > 0, 'Al menos un campo es requerido');
 
 export const actualizarEstadoPedidoSchema = z.object({

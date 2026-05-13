@@ -14,7 +14,7 @@ export const crearEmpleadoSchema = z.object({
 
     password: z.string()
         .min(8, 'La contraseña debe tener al menos 8 caracteres')
-        .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/, 
+        .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
             'La contraseña debe contener mayúsculas, minúsculas y números'),
 
     primerNombre: z.string()
@@ -34,7 +34,7 @@ export const crearEmpleadoSchema = z.object({
         .trim()
         .optional(),
 
-    rol: z.enum(['gerente', 'panadero', 'vendedor', 'administrativo']),
+    rol: z.enum(['admin', 'gerente', 'panadero', 'vendedor', 'administrativo']),
 
     salario: z.number()
         .positive('El salario debe ser mayor a 0'),
@@ -77,13 +77,22 @@ export const actualizarEmpleadoSchema = z.object({
         .trim()
         .optional(),
 
-    rol: z.enum(['gerente', 'panadero', 'vendedor', 'administrativo']).optional(),
+    rol: z.enum(['admin', 'gerente', 'panadero', 'vendedor', 'administrativo']).optional(),
 
     salario: z.number()
         .positive('El salario debe ser mayor a 0')
         .optional(),
 
-    estado: z.enum(['activo', 'inactivo', 'licencia']).optional()
+    estado: z.enum(['activo', 'inactivo', 'licencia']).optional(),
+
+    horario: z.object({
+        diaInicio: z.string().optional(),
+        diaFin: z.string().optional(),
+        horaInicio: z.string().optional(),
+        horaFin: z.string().optional()
+    }).optional(),
+
+    permisos: z.array(z.enum(['crear', 'editar', 'eliminar', 'ver', 'gestionar_empleados'])).optional()
 }).refine(obj => Object.keys(obj).length > 0, 'Al menos un campo es requerido');
 
 export const loginEmpleadoSchema = z.object({
