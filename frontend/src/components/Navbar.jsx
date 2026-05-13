@@ -10,28 +10,48 @@ import { useAuth } from '../context/AuthContext';
 
 UIkit.use(Icons);
 
+const navLinkClass = ({ isActive }) =>
+  `uk-link-reset nav-link${isActive ? ' nav-link-active' : ''}`;
+
 function Navbar() {
     const categorias = ['desayunos', 'panaderia', 'pasteleria', 'bebidas'];
     const { cart } = useCart();
     const { isAuthenticated, user, logout } = useAuth();
     const totalItems = cart.reduce((total, item) => total + item.cantidad, 0);
+
+    const displayName =
+        [user?.primerNombre, user?.apellido].filter(Boolean).join(' ').trim() ||
+        user?.username ||
+        user?.email ||
+        '';
+
   return (
-    <nav className="uk-navbar-container uk-navbar-transparent uk-position-fixed uk-position-top uk-width-1-1" data-uk-navbar="true">
+    <nav
+      className="uk-navbar-container uk-navbar-transparent uk-position-fixed uk-position-top uk-width-1-1 navbar-panaderia"
+      data-uk-navbar="delay-hide: 200"
+    >
         <div className="uk-container">
             <div data-uk-navbar>
-
-                <div className="uk-navbar-center">
-
+                <div className="uk-navbar-center navbar-panaderia-inner">
                     <div className="uk-navbar-center-left">
-                        <ul className="uk-navbar-nav">
-                            <li><NavLink to="/" className="uk-link-reset">Inicio</NavLink></li>
+                        <ul className="uk-navbar-nav navbar-nav-cluster">
                             <li>
-                                <NavLink to="/Productos" className="uk-link-reset">Menú</NavLink>
-                                <div className="uk-navbar-dropdown">
-                                    <ul className="uk-nav uk-navbar-dropdown-nav">
+                                <NavLink to="/" className={navLinkClass} end>
+                                    Inicio
+                                </NavLink>
+                            </li>
+                            <li>
+                                <NavLink to="/Productos" className={navLinkClass}>
+                                    Menú
+                                </NavLink>
+                                <div className="uk-navbar-dropdown nav-dropdown-panel">
+                                    <ul className="uk-nav uk-navbar-dropdown-nav nav-dropdown-list">
                                         {categorias.map((cat) => (
                                             <li key={cat}>
-                                                <NavLink to={`/Productos/${cat.charAt(0).toUpperCase() + cat.slice(1)}`} className="uk-link-reset">
+                                                <NavLink
+                                                    to={`/Productos/${cat.charAt(0).toUpperCase() + cat.slice(1)}`}
+                                                    className={navLinkClass}
+                                                >
                                                     {cat.charAt(0).toUpperCase() + cat.slice(1)}
                                                 </NavLink>
                                             </li>
@@ -41,42 +61,78 @@ function Navbar() {
                             </li>
                         </ul>
                     </div>
-                        <NavLink to="/" className="uk-navbar-item uk-logo">
-                            <div className="uk-flex uk-flex-center uk-flex-middle" style={{ width: "160px", height: "80px" }} >
-                                <img src={logo} alt="logo" className="uk-preserve-width uk-responsive" style={{ maxWidth: "100%", maxHeight: "100%", objectFit: "contain" }}/>
-                            </div>
-                        </NavLink>
-                    <div className="uk-navbar-center-right" >
-                        <ul className="uk-navbar-nav">
-                            <li><NavLink to="/Contacto" className="uk-link-reset">Contáctanos</NavLink></li>
-                            <li><NavLink to="/Nosotros" className="uk-link-reset">Nuestra historia</NavLink></li>
+
+                    <NavLink to="/" className="uk-navbar-item uk-logo navbar-logo-link" end>
+                        <div className="navbar-logo-wrap">
+                            <img
+                                src={logo}
+                                alt="Panadería — inicio"
+                                className="uk-preserve-width uk-responsive navbar-logo-img"
+                            />
+                        </div>
+                    </NavLink>
+
+                    <div className="uk-navbar-center-right">
+                        <ul className="uk-navbar-nav navbar-nav-cluster">
                             <li>
-                                {isAuthenticated ? (
-                                    <>
-                                        <span className="uk-text-small uk-margin-small-right" style={{ color: '#584125' }}>
-                                            {[user?.primerNombre, user?.apellido].filter(Boolean).join(' ').trim() ||
-                                                user?.username ||
-                                                user?.email}
-                                        </span>
-                                        <button
-                                            type="button"
-                                            className="uk-button uk-button-text uk-link-reset"
-                                            onClick={() => logout()}
-                                        >
-                                            Salir
-                                        </button>
-                                    </>
-                                ) : (
-                                    <NavLink to="/login" className="uk-link-reset">Entrar</NavLink>
-                                )}
+                                <NavLink to="/Contacto" className={navLinkClass}>
+                                    Contáctanos
+                                </NavLink>
                             </li>
                             <li>
-                                <NavLink to="/checkout" className="uk-link-reset cart-link" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                    <img src={carritoIcon} alt="Carrito" style={{ width: '24px', height: '24px', objectFit: 'contain' }} />
+                                <NavLink to="/Nosotros" className={navLinkClass}>
+                                    Nuestra historia
+                                </NavLink>
+                            </li>
+                            <li>
+                                <NavLink
+                                    to="/checkout"
+                                    className={({ isActive }) =>
+                                        `uk-link-reset cart-link${isActive ? ' cart-link-active' : ''}`
+                                    }
+                                    aria-label="Ir al carrito de compras"
+                                >
+                                    <img
+                                        src={carritoIcon}
+                                        alt=""
+                                        className="navbar-cart-icon"
+                                        width={24}
+                                        height={24}
+                                        decoding="async"
+                                    />
+                                    <span className="navbar-cart-label">Carrito</span>
                                     {totalItems > 0 && (
                                         <span className="cart-badge">{totalItems}</span>
                                     )}
                                 </NavLink>
+                            </li>
+                                                        <li>
+                                {isAuthenticated ? (
+                                    <div className="nav-auth">
+                                        <span className="nav-user-name" title={displayName}>
+                                            {displayName}
+                                        </span>
+                                        <button
+                                            type="button"
+                                            className="uk-button uk-button-text uk-link-reset nav-logout-btn"
+                                            onClick={() => logout()}
+                                            aria-label="Cerrar sesión"
+                                            title="Cerrar sesión"
+                                        >
+                                            <img
+                                                src="/cerrarSesion.svg"
+                                                alt=""
+                                                width={22}
+                                                height={22}
+                                                decoding="async"
+                                            />
+                                        </button>
+                                    </div>
+                                ) : (
+                                    <NavLink to="/login" className={navLinkClass}>
+                                        Entrar
+                                    </NavLink>
+                                )}
                             </li>
                         </ul>
                     </div>
@@ -84,7 +140,7 @@ function Navbar() {
             </div>
         </div>
     </nav>
-  )
+  );
 }
 
-export default Navbar
+export default Navbar;
