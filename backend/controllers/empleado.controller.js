@@ -54,7 +54,7 @@ export const actualizarEmpleado = async (req, res, next) => {
     }
 
     const empleado = await Empleado.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
+      returnDocument: 'after',
       runValidators: true,
     });
     if (!empleado) {

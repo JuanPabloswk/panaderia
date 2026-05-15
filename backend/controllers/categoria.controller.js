@@ -39,7 +39,7 @@ export const actualizarCategoria = async (req, res, next) => {
   try {
     if (req.file) req.body.imagen = `/uploads/${req.file.filename}`;
     const categoria = await Categoria.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
+      returnDocument: 'after',
       runValidators: true,
     });
     if (!categoria) {
@@ -69,7 +69,7 @@ export const cambiarEstadoCategoria = async (req, res, next) => {
     const categoria = await Categoria.findByIdAndUpdate(
       req.params.id,
       { estado },
-      { new: true, runValidators: true }
+      { returnDocument: 'after', runValidators: true }
     );
     if (!categoria) {
       return res.status(404).json({ ok: false, error: 'Categoría no encontrada' });

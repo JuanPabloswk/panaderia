@@ -29,7 +29,7 @@ export const obtenerCliente = async (req, res, next) => {
 export const actualizarCliente = async (req, res, next) => {
   try {
     const cliente = await Cliente.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
+      returnDocument: 'after',
       runValidators: true,
     }).populate('pedidos');
     if (!cliente) {
@@ -82,7 +82,7 @@ export const actualizarPerfil = async (req, res, next) => {
     });
 
     const cliente = await Cliente.findByIdAndUpdate(req.usuario.id, camposPermitidos, {
-      new: true,
+      returnDocument: 'after',
       runValidators: true,
     });
     if (!cliente) {

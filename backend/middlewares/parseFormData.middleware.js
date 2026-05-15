@@ -11,6 +11,7 @@ export const parseFormData = (req, res, next) => {
     const value = req.body[key];
 
     if (value === '' || value === null || value === undefined) {
+      delete req.body[key];
       continue;
     }
 
@@ -19,11 +20,13 @@ export const parseFormData = (req, res, next) => {
       if (!isNaN(parsed)) {
         req.body[key] = parsed;
       }
+      continue;
     }
 
     if (booleanFields.includes(key)) {
       if (value === 'true') req.body[key] = true;
       else if (value === 'false') req.body[key] = false;
+      continue;
     }
 
     if (jsonArrayFields.includes(key)) {
@@ -34,6 +37,7 @@ export const parseFormData = (req, res, next) => {
         }
       } catch {
       }
+      continue;
     }
   }
 
