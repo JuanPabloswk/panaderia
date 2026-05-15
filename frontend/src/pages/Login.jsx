@@ -44,8 +44,8 @@ export default function Login() {
           Iniciar sesión
         </h1>
         <p className="uk-text-meta">
-          Necesitas una cuenta de cliente para finalizar la compra. Si eres
-          empleado, usa tu usuario o correo corporativo.
+          Para comprar en la tienda necesitas rol <strong>cliente</strong> (registro público).
+          Si eres <strong>empleado</strong> o <strong>admin</strong>, inicia con tu usuario o correo corporativo.
         </p>
 
         <form className="uk-form-stacked uk-margin" onSubmit={handleSubmit}>

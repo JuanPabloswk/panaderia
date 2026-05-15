@@ -12,6 +12,9 @@ import { CartProvider } from './context/CartContext';
 import { AuthProvider } from './context/AuthContext';
 import Login from './pages/Login';
 import Registro from './pages/Registro';
+import PanelGuard from './components/PanelGuard';
+import PanelProductos from './pages/panel/PanelProductos';
+import PanelUsuarios from './pages/panel/PanelUsuarios';
 import "leaflet/dist/leaflet.css";
 
  
@@ -33,6 +36,22 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/registro" element={<Registro />} />
         <Route path="/checkout" element={<Checkout />} />
+        <Route
+          path="/panel/productos"
+          element={
+            <PanelGuard anyOf={['crear', 'editar', 'eliminar']}>
+              <PanelProductos />
+            </PanelGuard>
+          }
+        />
+        <Route
+          path="/panel/usuarios"
+          element={
+            <PanelGuard anyOf={['gestionar_usuarios']}>
+              <PanelUsuarios />
+            </PanelGuard>
+          }
+        />
     </Routes>
     <Footer />
 

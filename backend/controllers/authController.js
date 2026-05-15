@@ -1,34 +1,32 @@
-const Cliente = require('../models/Cliente');
-const Empleado = require('../models/Empleado');
+const Usuario = require('../models/Usuario');
 const { hashPassword, comparePassword } = require('../libs/encryption');
 const { signToken } = require('../libs/tokens');
+const {
+  ROLES_STAFF_CREABLES,
+  permisosEfectivosPorRol,
+  esRolCliente,
+} = require('../libs/rolesPermisos');
 const { HttpError } = require('../middleware/httpError');
 
 function escapeRegex(s) {
   return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
-function tokenPayloadEmpleado(doc) {
+/**
+ * JWT: `tipo` para el front — cliente compra; empleado y admin se tratan como staff en checkout.
+ */
+function tokenPayloadFromUsuario(doc) {
+  const rol = String(doc.rol || '').toLowerCase();
+  const cliente = esRolCliente(rol);
   return {
     id: doc._id.toString(),
-    tipo: 'empleado',
-    rol: doc.rol,
+    tipo: cliente ? 'cliente' : 'empleado',
+    rol,
     email: doc.email,
     username: doc.username,
     primerNombre: doc.primerNombre,
     apellido: doc.apellido,
-    permisos: doc.permisos || [],
-  };
-}
-
-function tokenPayloadCliente(doc) {
-  return {
-    id: doc._id.toString(),
-    tipo: 'cliente',
-    rol: 'cliente',
-    email: doc.email,
-    primerNombre: doc.primerNombre,
-    apellido: doc.apellido,
+    permisos: permisosEfectivosPorRol(rol),
   };
 }
 
@@ -64,25 +62,24 @@ async function register(req, res, next) {
     }
 
     const emailNorm = String(email).toLowerCase().trim();
-    const [yaCliente, yaEmpleado] = await Promise.all([
-      Cliente.findOne({ email: emailNorm }),
-      Empleado.findOne({ email: emailNorm }),
-    ]);
-    if (yaCliente || yaEmpleado) {
+    const existe = await Usuario.findOne({ email: emailNorm });
+    if (existe) {
       throw new HttpError(400, 'El correo ya está registrado', 'EMAIL_EXISTS');
     }
 
     const hash = await hashPassword(String(password));
-    const user = await Cliente.create({
+    const user = await Usuario.create({
       email: emailNorm,
       password: hash,
+      rol: 'cliente',
+      permisos: permisosEfectivosPorRol('cliente'),
       primerNombre: primerNombre ? String(primerNombre).trim() : '',
       apellido: apellido ? String(apellido).trim() : '',
       pedidos: [],
       preferencias: { favoriteProducts: [], newsletter: false },
     });
 
-    const payload = tokenPayloadCliente(user);
+    const payload = tokenPayloadFromUsuario(user);
     const token = signToken(payload);
 
     res.status(201).json({
@@ -111,48 +108,30 @@ async function login(req, res, next) {
     }
 
     const loginLower = raw.toLowerCase();
+    const query = raw.includes('@')
+      ? { email: loginLower }
+      : {
+          $or: [
+            { username: new RegExp(`^${escapeRegex(raw)}$`, 'i') },
+            { email: loginLower },
+          ],
+        };
 
-    const empleado = await Empleado.findOne({
-      $or: [
-        { email: loginLower },
-        { username: new RegExp(`^${escapeRegex(raw)}$`, 'i') },
-      ],
-    }).select('+password');
-
-    if (empleado) {
-      if (empleado.estado !== 'activo') {
-        throw new HttpError(403, 'Cuenta de empleado desactivada', 'EMPLOYEE_INACTIVE');
-      }
-      const okEmp = await comparePassword(String(password), empleado.password);
-      if (!okEmp) {
-        throw new HttpError(401, 'Credenciales incorrectas', 'LOGIN_FAILED');
-      }
-      const payload = tokenPayloadEmpleado(empleado);
-      const token = signToken(payload);
-      return res.json({
-        ok: true,
-        token,
-        user: publicUserFromPayload(payload),
-      });
-    }
-
-    if (!raw.includes('@')) {
+    const user = await Usuario.findOne(query).select('+password');
+    if (!user) {
       throw new HttpError(401, 'Credenciales incorrectas', 'LOGIN_FAILED');
     }
 
-    const cliente = await Cliente.findOne({ email: loginLower }).select(
-      '+password'
-    );
-    if (!cliente) {
+    if (user.estado !== 'activo') {
+      throw new HttpError(403, 'Cuenta desactivada', 'USER_INACTIVE');
+    }
+
+    const ok = await comparePassword(String(password), user.password);
+    if (!ok) {
       throw new HttpError(401, 'Credenciales incorrectas', 'LOGIN_FAILED');
     }
 
-    const okCli = await comparePassword(String(password), cliente.password);
-    if (!okCli) {
-      throw new HttpError(401, 'Credenciales incorrectas', 'LOGIN_FAILED');
-    }
-
-    const payload = tokenPayloadCliente(cliente);
+    const payload = tokenPayloadFromUsuario(user);
     const token = signToken(payload);
     res.json({
       ok: true,
@@ -163,15 +142,6 @@ async function login(req, res, next) {
     next(err);
   }
 }
-
-const ROLES_EMPLEADO = [
-  'admin',
-  'vendedor',
-  'cajero',
-  'cocinero',
-  'repartidor',
-  'empleado',
-];
 
 async function createEmpleado(req, res, next) {
   try {
@@ -186,7 +156,6 @@ async function createEmpleado(req, res, next) {
       rol,
       salario,
       estado,
-      permisos,
       fechaContratacion,
     } = b;
 
@@ -208,10 +177,17 @@ async function createEmpleado(req, res, next) {
     const rolNorm = String(rol || 'empleado')
       .trim()
       .toLowerCase();
-    if (!ROLES_EMPLEADO.includes(rolNorm)) {
+    if (rolNorm === 'cliente') {
       throw new HttpError(
         400,
-        `Rol no válido. Use uno de: ${ROLES_EMPLEADO.join(', ')}`,
+        'No se puede crear un usuario cliente por esta ruta; use el registro público',
+        'VALIDATION'
+      );
+    }
+    if (!ROLES_STAFF_CREABLES.includes(rolNorm)) {
+      throw new HttpError(
+        400,
+        `Rol no válido. Use uno de: ${ROLES_STAFF_CREABLES.join(', ')}`,
         'VALIDATION'
       );
     }
@@ -219,43 +195,36 @@ async function createEmpleado(req, res, next) {
     const emailNorm = String(email).toLowerCase().trim();
     const usernameNorm = String(username).trim().toLowerCase();
 
-    const [mailCliente, mailEmpleado, userEmpleado] = await Promise.all([
-      Cliente.findOne({ email: emailNorm }),
-      Empleado.findOne({ email: emailNorm }),
-      Empleado.findOne({ username: usernameNorm }),
-    ]);
-    if (mailCliente) {
+    const duplicado = await Usuario.findOne({
+      $or: [{ email: emailNorm }, { username: usernameNorm }],
+    });
+    if (duplicado) {
       throw new HttpError(
         400,
-        'Ese correo ya pertenece a un cliente de la tienda',
-        'EMAIL_CLIENTE'
-      );
-    }
-    if (mailEmpleado || userEmpleado) {
-      throw new HttpError(
-        400,
-        'Correo o usuario de empleado ya registrado',
-        'EMPLEADO_EXISTS'
+        'Correo o usuario ya registrado',
+        'USER_EXISTS'
       );
     }
 
     const hash = await hashPassword(String(password));
-    const doc = await Empleado.create({
+    const permisosGuardados = permisosEfectivosPorRol(rolNorm);
+
+    const doc = await Usuario.create({
       username: usernameNorm,
       email: emailNorm,
       password: hash,
+      rol: rolNorm,
+      permisos: permisosGuardados,
       primerNombre: primerNombre ? String(primerNombre).trim() : '',
       apellido: apellido ? String(apellido).trim() : '',
       telefono: telefono ? String(telefono).trim() : '',
-      rol: rolNorm,
       salario: Number.isFinite(Number(salario)) ? Number(salario) : 0,
       estado: estado === 'inactivo' ? 'inactivo' : 'activo',
-      permisos: Array.isArray(permisos)
-        ? permisos.map((p) => String(p).trim()).filter(Boolean)
-        : [],
       fechaContratacion: fechaContratacion
         ? new Date(fechaContratacion)
         : new Date(),
+      pedidos: [],
+      preferencias: { favoriteProducts: [], newsletter: false },
     });
 
     const safe = doc.toObject();
@@ -263,16 +232,12 @@ async function createEmpleado(req, res, next) {
 
     res.status(201).json({
       ok: true,
-      empleado: safe,
+      usuario: safe,
     });
   } catch (err) {
     if (err && err.code === 11000) {
       return next(
-        new HttpError(
-          400,
-          'Correo o usuario de empleado duplicado',
-          'DUPLICATE_KEY'
-        )
+        new HttpError(400, 'Correo o usuario duplicado', 'DUPLICATE_KEY')
       );
     }
     next(err);

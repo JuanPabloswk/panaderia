@@ -8,9 +8,9 @@ function ScrollToTop() {
     window.scrollTo({
       top: 0,
       left: 0,
-      behavior: 'smooth' // Opcional: para un desplazamiento más agradable
+      behavior: 'smooth' 
     });
-  }, [pathname]); // Dependencia: re-ejecutar cuando la ruta cambia
+  }, [pathname]); 
 
   return null;
 }

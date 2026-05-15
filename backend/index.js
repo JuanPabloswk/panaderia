@@ -6,6 +6,7 @@ const morgan = require('morgan');
 const productosRoutes = require('./routes/productos.routes');
 const pedidosRoutes = require('./routes/pedidos.routes');
 const authRoutes = require('./routes/auth.routes');
+const panelRoutes = require('./routes/panel.routes');
 const { verificarToken } = require('./middleware/authMiddleware');
 const notFound = require('./middleware/notFound');
 const errorHandler = require('./middleware/errorHandler');
@@ -26,6 +27,7 @@ app.use(express.json());
 app.use('/api/productos', productosRoutes);
 app.use('/api/pedidos', pedidosRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/api/panel', panelRoutes);
 
 app.get('/api/me', verificarToken, (req, res) => {
   const u = req.user || {};

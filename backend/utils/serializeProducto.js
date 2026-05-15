@@ -40,7 +40,6 @@ function serializeProducto(doc) {
     precio: doc.precio,
     imagen: doc.imagen ?? null,
     stock: doc.stock,
-    descuento: doc.descuento ?? 0,
     peso: doc.peso,
     ingredientes: Array.isArray(doc.ingredientes) ? doc.ingredientes : [],
     calificacion: doc.calificacion ?? 0,
@@ -53,4 +52,24 @@ function serializeProducto(doc) {
   };
 }
 
-module.exports = { serializeProducto, slugify, categoriaActiva };
+function categoriaIdFromDoc(doc) {
+  const cat = doc.categoria;
+  if (cat && typeof cat === 'object' && cat._id) return cat._id.toString();
+  if (cat) return String(cat);
+  return '';
+}
+
+/** Panel admin: mismo formato que catálogo + id de categoría para formularios. */
+function serializeProductoPanel(doc) {
+  return {
+    ...serializeProducto(doc),
+    categoriaId: categoriaIdFromDoc(doc),
+  };
+}
+
+module.exports = {
+  serializeProducto,
+  serializeProductoPanel,
+  slugify,
+  categoriaActiva,
+};

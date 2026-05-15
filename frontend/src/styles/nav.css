@@ -22,22 +22,8 @@ body {
 }
 
 .navbar-panaderia-inner.uk-navbar-center {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-    column-gap: clamp(0.35rem, 2vw, 1.75rem);
-    row-gap: 0.35rem;
     min-height: 68px;
     padding: 0.35rem 0;
-    width: 100%;
-}
-
-@media (min-width: 960px) {
-    .navbar-panaderia-inner.uk-navbar-center {
-        flex-wrap: nowrap;
-        justify-content: space-between;
-    }
 }
 
 .navbar-nav-cluster.uk-navbar-nav {

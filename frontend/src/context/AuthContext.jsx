@@ -74,6 +74,24 @@ export function AuthProvider({ children }) {
     return { Authorization: `Bearer ${token}` };
   }, [token]);
 
+  const hasPermiso = useCallback(
+    (perm) => Array.isArray(user?.permisos) && user.permisos.includes(perm),
+    [user]
+  );
+
+  const puedePanelProductos = useMemo(
+    () =>
+      ['crear', 'editar', 'eliminar'].some((p) =>
+        Array.isArray(user?.permisos) ? user.permisos.includes(p) : false
+      ),
+    [user]
+  );
+
+  const puedeGestionarUsuarios = useMemo(
+    () => hasPermiso('gestionar_usuarios'),
+    [hasPermiso]
+  );
+
   const value = useMemo(
     () => ({
       token,
@@ -83,8 +101,21 @@ export function AuthProvider({ children }) {
       register,
       logout,
       authHeader,
+      hasPermiso,
+      puedePanelProductos,
+      puedeGestionarUsuarios,
     }),
-    [token, user, login, register, logout, authHeader]
+    [
+      token,
+      user,
+      login,
+      register,
+      logout,
+      authHeader,
+      hasPermiso,
+      puedePanelProductos,
+      puedeGestionarUsuarios,
+    ]
   );
 
   return (

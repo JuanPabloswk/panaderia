@@ -2,7 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const Producto = require('../models/Producto');
 const Pedido = require('../models/Pedido');
-const Cliente = require('../models/Cliente');
+const Usuario = require('../models/Usuario');
 const dbReady = require('../middleware/dbReady');
 const { verificarToken, soloCliente } = require('../middleware/authMiddleware');
 const { HttpError } = require('../middleware/httpError');
@@ -124,13 +124,26 @@ router.post('/', verificarToken, soloCliente, async (req, res, next) => {
   const clienteIdRaw = req.user?.id || req.user?.sub;
   const clienteOid = normalizeObjectId(clienteIdRaw);
   if (!clienteOid) {
-    return next(new HttpError(400, 'Cliente inválido', 'CLIENTE_INVALID'));
+    return next(new HttpError(400, 'Usuario inválido', 'USUARIO_INVALID'));
   }
 
-  const existeCliente = await Cliente.exists({ _id: clienteOid });
-  if (!existeCliente) {
-    return next(new HttpError(400, 'Cliente no encontrado', 'CLIENTE_NOT_FOUND'));
+  const comprador = await Usuario.findById(clienteOid)
+    .select('primerNombre apellido email rol')
+    .lean();
+  if (!comprador || String(comprador.rol || '').toLowerCase() !== 'cliente') {
+    return next(
+      new HttpError(
+        403,
+        'Solo usuarios con rol cliente pueden registrar pedidos',
+        'FORBIDDEN_NOT_CLIENT'
+      )
+    );
   }
+
+  const clienteNombre =
+    [comprador.primerNombre, comprador.apellido].filter(Boolean).join(' ').trim() ||
+    comprador.email ||
+    'Cliente';
 
   const { error, lines } = await validarYLineas(items);
   if (error) {
@@ -176,6 +189,7 @@ router.post('/', verificarToken, soloCliente, async (req, res, next) => {
 
     pedidoDoc = await Pedido.create({
       cliente: clienteOid,
+      clienteNombre,
       empleado: null,
       items: lines,
       subtotal,
@@ -187,7 +201,7 @@ router.post('/', verificarToken, soloCliente, async (req, res, next) => {
       fechaPedido: new Date(),
     });
 
-    await Cliente.updateOne(
+    await Usuario.updateOne(
       { _id: clienteOid },
       { $push: { pedidos: pedidoDoc._id } }
     );
@@ -198,6 +212,7 @@ router.post('/', verificarToken, soloCliente, async (req, res, next) => {
       pedido: {
         _id: pedidoDoc._id,
         cliente: pedidoDoc.cliente,
+        clienteNombre: pedidoDoc.clienteNombre,
         empleado: pedidoDoc.empleado,
         items: pedidoDoc.items,
         subtotal: pedidoDoc.subtotal,
@@ -215,7 +230,7 @@ router.post('/', verificarToken, soloCliente, async (req, res, next) => {
     await revertirStock(decrementados);
     if (pedidoDoc?._id) {
       await Pedido.deleteOne({ _id: pedidoDoc._id }).catch(() => {});
-      await Cliente.updateOne(
+      await Usuario.updateOne(
         { _id: clienteOid },
         { $pull: { pedidos: pedidoDoc._id } }
       ).catch(() => {});

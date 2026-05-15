@@ -17,12 +17,14 @@ const pedidoSchema = new mongoose.Schema(
   {
     cliente: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Cliente',
+      ref: 'Usuario',
       required: true,
     },
+    /** Nombre del comprador al crear el pedido (solo rol `cliente` puede comprar). */
+    clienteNombre: { type: String, default: '' },
     empleado: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Empleado',
+      ref: 'Usuario',
       default: null,
     },
     items: { type: [itemPedidoSchema], required: true },

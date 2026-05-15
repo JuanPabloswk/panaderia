@@ -1,4 +1,5 @@
 const { verifyToken } = require('../libs/tokens');
+const { permisosEfectivosPorRol } = require('../libs/rolesPermisos');
 const { HttpError } = require('./httpError');
 
 function verificarToken(req, res, next) {
@@ -18,6 +19,7 @@ function verificarToken(req, res, next) {
       id: decoded.id || decoded.sub,
       rol,
       role: decoded.role || rol,
+      permisos: permisosEfectivosPorRol(rol),
     };
     next();
   } catch {
@@ -25,9 +27,16 @@ function verificarToken(req, res, next) {
   }
 }
 
-/** Solo cuentas tipo cliente (compras). */
+function esRolCliente(user) {
+  return (
+    user?.tipo === 'cliente' ||
+    String(user?.rol || '').toLowerCase() === 'cliente'
+  );
+}
+
+/** Solo rol `cliente` (compras en la tienda). */
 function soloCliente(req, res, next) {
-  if (req.user?.tipo !== 'cliente') {
+  if (!esRolCliente(req.user)) {
     return next(
       new HttpError(
         403,
@@ -39,19 +48,9 @@ function soloCliente(req, res, next) {
   next();
 }
 
-/** Solo empleados con rol admin (JWT emitido al iniciar sesión como empleado). */
+/** Rol admin (colección `usuarios`). */
 function soloAdmin(req, res, next) {
-  if (req.user?.tipo !== 'empleado') {
-    return next(
-      new HttpError(
-        403,
-        'Acceso denegado: solo personal autorizado',
-        'FORBIDDEN_ADMIN'
-      )
-    );
-  }
-  const r = String(req.user?.rol || '').toLowerCase();
-  if (r !== 'admin') {
+  if (String(req.user?.rol || '').toLowerCase() !== 'admin') {
     return next(
       new HttpError(
         403,
@@ -80,7 +79,6 @@ function authorizeRoles(...roles) {
   };
 }
 
-/** Requiere que el JWT incluya al menos uno de los permisos (empleados). */
 function authorizePermisos(...permisosRequeridos) {
   return (req, res, next) => {
     const lista = Array.isArray(req.user?.permisos) ? req.user.permisos : [];

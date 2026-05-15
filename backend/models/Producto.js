@@ -7,7 +7,6 @@ const productoSchema = new mongoose.Schema(
     precio: { type: Number, required: true, min: 0 },
     imagen: { type: String, default: null },
     stock: { type: Number, default: 0, min: 0 },
-    descuento: { type: Number, default: 0, min: 0 },
     peso: { type: String, default: '' },
     ingredientes: { type: [String], default: [] },
     calificacion: { type: Number, default: 0, min: 0 },

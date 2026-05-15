@@ -8,7 +8,10 @@ import UIkit from 'uikit';
 function Checkout() {
   const { cart, removeFromCart, updateQuantity, clearCart, getTotalPrice } = useCart();
   const { isAuthenticated, authHeader, logout, user } = useAuth();
-  const canCheckout = isAuthenticated && user?.tipo === 'cliente';
+  const isClienteUser =
+    user?.tipo === 'cliente' ||
+    String(user?.rol || '').toLowerCase() === 'cliente';
+  const canCheckout = isAuthenticated && isClienteUser;
 
   const handleQuantityChange = (productId, newQuantity, productName) => {
     if (newQuantity < 1) {
@@ -42,10 +45,10 @@ function Checkout() {
       });
       return;
     }
-    if (user?.tipo !== 'cliente') {
+    if (!isClienteUser) {
       UIkit.notification({
         message:
-          'Las cuentas de empleado no pueden finalizar pedidos en la tienda. Usa una cuenta de cliente.',
+          'Solo las cuentas con rol cliente pueden finalizar pedidos en la tienda. Usa el registro de cliente o otro correo.',
         status: 'warning',
         pos: 'top-center',
         timeout: 5000
@@ -135,11 +138,11 @@ function Checkout() {
             </p>
           </div>
         )}
-        {isAuthenticated && user?.tipo === 'empleado' && (
+        {isAuthenticated && !isClienteUser && (
           <div className="uk-alert-warning uk-margin-medium-bottom" data-uk-alert>
             <p className="uk-margin-remove">
-              Has iniciado sesión como empleado. Para comprar en la tienda necesitas una{' '}
-              <Link to="/registro">cuenta de cliente</Link> (correo distinto al corporativo si aplica).
+              Tu usuario no tiene rol <strong>cliente</strong> (por ejemplo empleado o admin). Para comprar aquí necesitas una{' '}
+              <Link to="/registro">cuenta de cliente</Link> (otro correo si ya usas el corporativo).
             </p>
           </div>
         )}
@@ -279,8 +282,8 @@ function Checkout() {
                   title={
                     !isAuthenticated
                       ? 'Inicia sesión para pagar'
-                      : user?.tipo !== 'cliente'
-                        ? 'Solo cuentas de cliente pueden pagar aquí'
+                      : !isClienteUser
+                        ? 'Solo cuentas con rol cliente pueden pagar aquí'
                         : ''
                   }
                 >

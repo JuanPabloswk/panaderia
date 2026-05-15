@@ -1,9 +1,22 @@
 import { useState, useEffect, useRef } from 'react'
-import { useParams } from 'react-router-dom'; 
+import { useParams, useLocation } from 'react-router-dom'; 
 import { API_BASE_URL } from '../config/api.js';
 import '../styles/products.css';
 import UIkit from 'uikit';
 import { useCart } from '../context/CartContext.jsx';
+
+function formatPrecioCOP(precio) {
+    const n = Number(precio);
+    if (!Number.isFinite(n)) {
+        return '—';
+    }
+    return n.toLocaleString('es-CO', {
+        style: 'currency',
+        currency: 'COP',
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0,
+    });
+}
 
 function Product({ producto, onSelect }) {
     const imgUrl = (producto.imagen || '').trim();
@@ -25,12 +38,7 @@ function Product({ producto, onSelect }) {
                 <h2 className="uk-card-title">{producto.nombre}</h2>
                 <div className='precio-button'>
                     <h2>
-                        {producto.precio.toLocaleString('es-CO', { 
-                            style: 'currency', 
-                            currency: 'COP',
-                            minimumFractionDigits: 0,
-                            maximumFractionDigits: 0
-                        })}
+                        {formatPrecioCOP(producto.precio)}
                     </h2>
                     <button className="uk-button uk-button-default" onClick={handleClick}>Agregar</button>
                 </div>
@@ -129,14 +137,9 @@ function Modal ({ producto, onAddToCart }) {
                         <div className='modal-content-right uk-padding'>
                             <h1 className="uk-modal-title">{producto?.nombre}</h1>
                             <p>{producto?.descripcion}</p>
-                            {producto?.precio && (
+                            {Number.isFinite(Number(producto?.precio)) && (
                                 <p style={{ fontSize: '24px', fontWeight: 'bold', color: '#584125', marginTop: '20px' }}>
-                                    {producto.precio.toLocaleString('es-CO', { 
-                                        style: 'currency', 
-                                        currency: 'COP',
-                                        minimumFractionDigits: 0,
-                                        maximumFractionDigits: 0
-                                    })}
+                                    {formatPrecioCOP(producto.precio)}
                                 </p>
                             )}
                             <div className="uk-text-right" style={{ marginTop: '20px' }}>
@@ -166,6 +169,7 @@ function Modal ({ producto, onAddToCart }) {
 
 export default function Products() {
     const { categoria } = useParams();
+    const location = useLocation();
     const [fuenteProductos, setFuenteProductos] = useState([]);
     const [productosFiltrados, setProductosFiltrados] = useState([]);
     const [productoSeleccionado, setProductoSeleccionado] = useState(null);
@@ -181,11 +185,6 @@ export default function Products() {
             .then((data) => {
                 if (cancelado) return;
                 const lista = Array.isArray(data.productos) ? data.productos : [];
-                if (lista.length === 0) {
-                    setFuenteProductos([]);
-                    setCatalogoEstado('error');
-                    return;
-                }
                 setFuenteProductos(lista);
                 setCatalogoEstado('ok');
             })
@@ -198,7 +197,7 @@ export default function Products() {
         return () => {
             cancelado = true;
         };
-    }, [retryTick]);
+    }, [retryTick, location.key]);
 
     useEffect(() => {
         if (categoria) {
@@ -216,8 +215,18 @@ export default function Products() {
 
     const handleSelect = (producto) => {
         setProductoSeleccionado(producto);
-        UIkit.modal("#modal-producto").show();
-    }
+        UIkit.modal('#modal-producto').show();
+    };
+
+    useEffect(() => {
+        if (
+            productoSeleccionado &&
+            !fuenteProductos.some((p) => p.id === productoSeleccionado.id)
+        ) {
+            setProductoSeleccionado(null);
+            UIkit.modal('#modal-producto')?.hide?.();
+        }
+    }, [fuenteProductos, productoSeleccionado]);
 
     if (catalogoEstado === 'loading') {
         return (
@@ -254,11 +263,15 @@ export default function Products() {
             {productosFiltrados.length === 0 ? (
                 <div className="uk-container uk-text-center uk-margin">
                     <p className="uk-text-lead" style={{ color: '#584125' }}>
-                        No hay productos en esta categoría.
+                        {categoria
+                            ? 'No hay productos en esta categoría.'
+                            : 'No hay productos publicados por el momento.'}
                     </p>
-                    <a href="/Productos" className="uk-button uk-button-default" style={{ borderRadius: '25px' }}>
-                        Ver todas las categorías
-                    </a>
+                    {categoria ? (
+                        <a href="/Productos" className="uk-button uk-button-default" style={{ borderRadius: '25px' }}>
+                            Ver todas las categorías
+                        </a>
+                    ) : null}
                 </div>
             ) : (
             <div className="products uk-grid-column-small uk-grid-row-medium uk-child-width-1-1@s uk-child-width-1-2@m uk-child-width-1-3@l uk-text-center" data-uk-grid>
