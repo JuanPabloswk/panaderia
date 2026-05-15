@@ -16,13 +16,15 @@ function Product({ producto, onAddToCart, onViewDetail }) {
 
   const handleAdd = (e) => {
     e.stopPropagation();
-    onAddToCart(producto);
-    UIkit.notification({
-      message: `✓ ${producto.nombre} agregado al carrito`,
-      status: 'success',
-      pos: 'top-center',
-      timeout: 2000,
-    });
+    const agregado = onAddToCart(producto);
+    if (agregado) {
+      UIkit.notification({
+        message: `✓ ${producto.nombre} agregado al carrito`,
+        status: 'success',
+        pos: 'top-center',
+        timeout: 2000,
+      });
+    }
   };
 
   return (
@@ -171,7 +173,7 @@ export default function Products() {
         timeout: 3000,
       });
       navigate('/login');
-      return;
+      return false;
     }
     const precioFinal = producto.descuento > 0
       ? producto.precio * (1 - producto.descuento / 100)
@@ -183,6 +185,7 @@ export default function Products() {
       precio: precioFinal,
       imagen: producto.imagen,
     });
+    return true;
   };
 
   const handleViewDetail = (producto) => {
