@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { obtenerProductos, obtenerCategorias } from '../services/productos.service';
 import '../styles/products.css';
@@ -7,17 +7,26 @@ import { useCart } from '../context/CartContext';
 
 const API_BASE = 'http://localhost:4000';
 
-function Product({ producto, onSelect }) {
+function Product({ producto, onAddToCart, onViewDetail }) {
   const imgUrl = producto.imagen ? `${API_BASE}${producto.imagen}` : null;
   const precioConDescuento = producto.descuento > 0
     ? producto.precio * (1 - producto.descuento / 100)
     : null;
 
-  const handleClick = () => onSelect(producto);
+  const handleAdd = (e) => {
+    e.stopPropagation();
+    onAddToCart(producto);
+    UIkit.notification({
+      message: `✓ ${producto.nombre} agregado al carrito`,
+      status: 'success',
+      pos: 'top-center',
+      timeout: 2000,
+    });
+  };
 
   return (
     <div className="product-card uk-card uk-card-default">
-      <div className="imagen-card uk-card-media-top">
+      <div className="imagen-card uk-card-media-top" onClick={() => onViewDetail(producto)} style={{ cursor: 'pointer' }}>
         {imgUrl ? (
           <img src={imgUrl} alt={producto.nombre} />
         ) : (
@@ -27,7 +36,7 @@ function Product({ producto, onSelect }) {
         )}
       </div>
       <div className="uk-card-body">
-        <h2 className="uk-card-title">{producto.nombre}</h2>
+        <h2 className="uk-card-title" onClick={() => onViewDetail(producto)} style={{ cursor: 'pointer' }}>{producto.nombre}</h2>
         <p style={{
           color: '#584125',
           margin: '5px 0',
@@ -57,56 +66,18 @@ function Product({ producto, onSelect }) {
               </h2>
             )}
           </div>
-          <button className="uk-button uk-button-default" onClick={handleClick}>Agregar</button>
+          <button className="uk-button uk-button-primary" onClick={handleAdd} style={{ borderRadius: '25px' }}>Agregar</button>
         </div>
       </div>
     </div>
   );
 }
 
-function Modal({ producto, onAddToCart }) {
-  const addBtnRef = useRef(null);
+function Modal({ producto }) {
   const imgUrl = producto?.imagen ? `${API_BASE}${producto.imagen}` : null;
   const precioConDescuento = producto?.descuento > 0
     ? producto.precio * (1 - producto.descuento / 100)
     : null;
-
-  useEffect(() => {
-    UIkit.modal('#modal-producto').$emit('beforeshow');
-  }, []);
-
-  useEffect(() => {
-    const btn = addBtnRef.current;
-    if (!btn || !producto || !onAddToCart) return;
-
-    const handler = (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-
-      const precioFinal = precioConDescuento || producto.precio;
-      const item = {
-        _id: producto._id,
-        nombre: producto.nombre,
-        descripcion: producto.descripcion,
-        precio: precioFinal,
-        imagen: producto.imagen,
-      };
-
-      onAddToCart(item);
-      UIkit.modal('#modal-producto').hide();
-      setTimeout(() => {
-        UIkit.notification({
-          message: `✓ ${producto.nombre} agregado al carrito`,
-          status: 'success',
-          pos: 'top-center',
-          timeout: 3000,
-        });
-      }, 300);
-    };
-
-    btn.addEventListener('click', handler);
-    return () => btn.removeEventListener('click', handler);
-  }, [producto, onAddToCart, precioConDescuento]);
 
   return (
     <div id="modal-producto" data-uk-modal>
@@ -144,15 +115,7 @@ function Modal({ producto, onAddToCart }) {
               )}
             </div>
             <div className="uk-text-right" style={{ marginTop: '20px' }}>
-              <button className="uk-button uk-button-default uk-modal-close" type="button">Cancelar</button>
-              <button
-                ref={addBtnRef}
-                className="uk-button uk-button-primary"
-                type="button"
-                style={{ marginLeft: '10px', borderRadius: '25px' }}
-              >
-                Agregar al carrito
-              </button>
+              <button className="uk-button uk-button-default uk-modal-close" type="button">Cerrar</button>
             </div>
           </div>
         </div>
@@ -200,7 +163,20 @@ export default function Products() {
     fetchProductos();
   }, [categoria]);
 
-  const handleSelect = (producto) => {
+  const handleAddToCart = (producto) => {
+    const precioFinal = producto.descuento > 0
+      ? producto.precio * (1 - producto.descuento / 100)
+      : producto.precio;
+    addToCart({
+      _id: producto._id,
+      nombre: producto.nombre,
+      descripcion: producto.descripcion,
+      precio: precioFinal,
+      imagen: producto.imagen,
+    });
+  };
+
+  const handleViewDetail = (producto) => {
     setProductoSeleccionado(producto);
     setTimeout(() => {
       UIkit.modal('#modal-producto').show();
@@ -225,12 +201,12 @@ export default function Products() {
         <div className="products uk-grid-column-small uk-grid-row-medium uk-child-width-1-1@s uk-child-width-1-2@m uk-child-width-1-3@l uk-text-center" data-uk-grid>
           {productos.map((p) => (
             <div className="producto" key={p._id}>
-              <Product producto={p} onSelect={handleSelect} />
+              <Product producto={p} onAddToCart={handleAddToCart} onViewDetail={handleViewDetail} />
             </div>
           ))}
         </div>
       )}
-      <Modal producto={productoSeleccionado} onAddToCart={addToCart} />
+      <Modal producto={productoSeleccionado} />
     </div>
   );
 }
