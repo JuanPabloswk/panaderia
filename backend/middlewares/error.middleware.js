@@ -18,6 +18,10 @@ export const errorHandler = (err, req, res, next) => {
     return res.status(400).json({ ok: false, error: 'ID inválido' });
   }
 
+  if (err.code === 'LIMIT_FILE_SIZE') {
+    return res.status(400).json({ ok: false, error: 'La imagen supera el tamaño máximo permitido de 5MB' });
+  }
+
   if (err.message?.includes('Solo se permiten imágenes')) {
     return res.status(400).json({ ok: false, error: err.message });
   }

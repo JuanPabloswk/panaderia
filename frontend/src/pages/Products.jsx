@@ -72,6 +72,10 @@ function Modal({ producto, onAddToCart }) {
     : null;
 
   useEffect(() => {
+    UIkit.modal('#modal-producto').$emit('beforeshow');
+  }, []);
+
+  useEffect(() => {
     const btn = addBtnRef.current;
     if (!btn || !producto || !onAddToCart) return;
 
@@ -198,7 +202,9 @@ export default function Products() {
 
   const handleSelect = (producto) => {
     setProductoSeleccionado(producto);
-    UIkit.modal('#modal-producto').show();
+    setTimeout(() => {
+      UIkit.modal('#modal-producto').show();
+    }, 50);
   };
 
   return (
