@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { obtenerProductos, obtenerCategorias } from '../services/productos.service';
 import '../styles/products.css';
 import UIkit from 'uikit';
 import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
 
 const API_BASE = 'http://localhost:4000';
 
@@ -81,23 +82,21 @@ function Modal({ producto }) {
 
   return (
     <div id="modal-producto" data-uk-modal>
-      <div className="uk-modal-dialog uk-margin-auto-vertical uk-modal-body modal-custom-grid">
-        <div className="uk-grid-collapse uk-child-width-1-2@m uk-flex-middle" data-uk-grid>
-          <div className="imagen-modal-contenedor">
-            {imgUrl ? (
-              <img src={imgUrl} alt={producto?.nombre} />
-            ) : (
-              <div className="uk-placeholder uk-text-center" style={{ height: '100%', display: 'flex', alignItems: 'center' }}>Sin imagen</div>
-            )}
-          </div>
-          <div className="modal-content-right uk-padding">
-            <h1 className="uk-modal-title">{producto?.nombre}</h1>
-            <p>{producto?.descripcion}</p>
-            {producto?.peso && <p style={{ color: '#584125' }}><strong>Peso:</strong> {producto.peso}</p>}
+      <div className="uk-modal-dialog uk-margin-auto-vertical uk-modal-body" style={{ borderRadius: '15px', maxWidth: '700px' }}>
+        <div className="uk-grid-collapse uk-flex-middle" data-uk-grid>
+          {imgUrl && (
+            <div className="uk-width-1-2@m uk-cover-container" style={{ minHeight: '300px', backgroundColor: '#f5f5f5', borderRadius: '15px 0 0 15px', overflow: 'hidden' }}>
+              <img src={imgUrl} alt={producto?.nombre} data-uk-cover />
+            </div>
+          )}
+          <div className={imgUrl ? 'uk-width-1-2@m' : 'uk-width-1-1'} style={{ padding: '30px', textAlign: 'center' }}>
+            <h1 className="uk-modal-title" style={{ color: '#C98A40', fontWeight: 'bold' }}>{producto?.nombre}</h1>
+            <p style={{ color: '#584125', margin: '10px 0', fontSize: '15px', lineHeight: '1.6' }}>{producto?.descripcion}</p>
+            {producto?.peso && <p style={{ color: '#584125', margin: '5px 0' }}><strong>Peso:</strong> {producto.peso}</p>}
             {producto?.ingredientes?.length > 0 && (
-              <p style={{ color: '#584125' }}><strong>Ingredientes:</strong> {producto.ingredientes.join(', ')}</p>
+              <p style={{ color: '#584125', margin: '5px 0' }}><strong>Ingredientes:</strong> {producto.ingredientes.join(', ')}</p>
             )}
-            <div style={{ marginTop: '20px' }}>
+            <div style={{ margin: '20px 0' }}>
               {precioConDescuento ? (
                 <>
                   <p style={{ fontSize: '18px', color: '#e74c3c', textDecoration: 'line-through', margin: 0 }}>
@@ -109,14 +108,12 @@ function Modal({ producto }) {
                   </p>
                 </>
               ) : (
-                <p style={{ fontSize: '28px', fontWeight: 'bold', color: '#584125' }}>
+                <p style={{ fontSize: '28px', fontWeight: 'bold', color: '#584125', margin: 0 }}>
                   {producto?.precio?.toLocaleString('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 })}
                 </p>
               )}
             </div>
-            <div className="uk-text-right" style={{ marginTop: '20px' }}>
-              <button className="uk-button uk-button-default uk-modal-close" type="button">Cerrar</button>
-            </div>
+            <button className="uk-button uk-button-default uk-modal-close" type="button" style={{ borderRadius: '25px', padding: '8px 30px' }}>Cerrar</button>
           </div>
         </div>
       </div>
@@ -130,6 +127,8 @@ export default function Products() {
   const [loading, setLoading] = useState(true);
   const [productoSeleccionado, setProductoSeleccionado] = useState(null);
   const { addToCart } = useCart();
+  const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProductos = async () => {
@@ -164,6 +163,16 @@ export default function Products() {
   }, [categoria]);
 
   const handleAddToCart = (producto) => {
+    if (!isAuthenticated) {
+      UIkit.notification({
+        message: 'Debes iniciar sesión para agregar productos al carrito',
+        status: 'warning',
+        pos: 'top-center',
+        timeout: 3000,
+      });
+      navigate('/login');
+      return;
+    }
     const precioFinal = producto.descuento > 0
       ? producto.precio * (1 - producto.descuento / 100)
       : producto.precio;
