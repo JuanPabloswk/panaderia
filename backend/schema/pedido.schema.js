@@ -8,23 +8,23 @@ export const crearPedidoSchema = z.object({
         z.object({
             producto: z.string()
                 .regex(/^[0-9a-fA-F]{24}$/, 'El ID de producto debe ser válido'),
-            cantidad: z.number()
+            cantidad: z.coerce.number()
                 .int('La cantidad debe ser un número entero')
                 .min(1, 'La cantidad debe ser mayor a 0'),
-            precioUnitario: z.number()
+            precioUnitario: z.coerce.number()
                 .positive('El precio debe ser mayor a 0')
         })
     ).min(1, 'El pedido debe contener al menos un item'),
 
-    subtotal: z.number()
+    subtotal: z.coerce.number()
         .min(0, 'El subtotal no puede ser negativo'),
 
-    descuentoTotal: z.number()
+    descuentoTotal: z.coerce.number()
         .min(0, 'El descuento no puede ser negativo')
         .optional()
         .default(0),
 
-    total: z.number()
+    total: z.coerce.number()
         .min(0, 'El total no puede ser negativo'),
 
     metodoPago: z.enum(['efectivo', 'tarjeta', 'transferencia', 'nequi'])

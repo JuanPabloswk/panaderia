@@ -36,7 +36,7 @@ export const crearEmpleadoSchema = z.object({
 
     rol: z.enum(['admin', 'gerente', 'panadero', 'vendedor', 'administrativo']),
 
-    salario: z.number()
+    salario: z.coerce.number()
         .positive('El salario debe ser mayor a 0'),
 
     estado: z.enum(['activo', 'inactivo', 'licencia'])
