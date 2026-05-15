@@ -57,7 +57,27 @@ export const actualizarProducto = async (req, res, next) => {
   try {
     if (req.file) req.body.imagen = `/uploads/${req.file.filename}`;
     const producto = await Producto.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
+      returnDocument: 'after',
+      runValidators: true,
+    }).populate('categoria', 'nombre');
+
+    if (!producto) {
+      return res.status(404).json({ ok: false, error: 'Producto no encontrado' });
+    }
+    res.json({ ok: true, data: producto });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const subirImagenProducto = async (req, res, next) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ ok: false, error: 'Debe seleccionar una imagen' });
+    }
+    const imagen = `/uploads/${req.file.filename}`;
+    const producto = await Producto.findByIdAndUpdate(req.params.id, { imagen }, {
+      returnDocument: 'after',
       runValidators: true,
     }).populate('categoria', 'nombre');
 

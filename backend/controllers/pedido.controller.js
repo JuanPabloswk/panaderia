@@ -57,7 +57,7 @@ export const crearPedido = async (req, res, next) => {
       cliente: req.usuario.rol === 'cliente' ? req.usuario.id : req.body.cliente,
     };
 
-    const pedido = await Pedido.create(data);
+    const pedido = await Pedido.create({ ...data, estado: 'confirmado' });
     const populated = await pedido.populate([
       { path: 'cliente', select: 'primerNombre apellido email' },
       { path: 'items.producto', select: 'nombre precio' },
@@ -72,7 +72,7 @@ export const crearPedido = async (req, res, next) => {
 export const actualizarPedido = async (req, res, next) => {
   try {
     const pedido = await Pedido.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
+      returnDocument: 'after',
       runValidators: true,
     })
       .populate('cliente', 'primerNombre apellido email')
@@ -97,7 +97,7 @@ export const actualizarEstadoPedido = async (req, res, next) => {
     }
 
     const pedido = await Pedido.findByIdAndUpdate(req.params.id, updateData, {
-      new: true,
+      returnDocument: 'after',
       runValidators: true,
     })
       .populate('cliente', 'primerNombre apellido')
