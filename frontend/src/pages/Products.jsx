@@ -28,6 +28,18 @@ function Product({ producto, onSelect }) {
       </div>
       <div className="uk-card-body">
         <h2 className="uk-card-title">{producto.nombre}</h2>
+        <p style={{
+          color: '#584125',
+          margin: '5px 0',
+          fontSize: '14px',
+          display: '-webkit-box',
+          WebkitLineClamp: 2,
+          WebkitBoxOrient: 'vertical',
+          overflow: 'hidden',
+          minHeight: '42px'
+        }}>
+          {producto.descripcion}
+        </p>
         <div className="precio-button">
           <div>
             {precioConDescuento ? (
