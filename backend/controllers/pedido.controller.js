@@ -1,4 +1,5 @@
 import Pedido from '../models/pedido.model.js';
+import Producto from '../models/producto.model.js';
 
 export const obtenerPedidos = async (req, res, next) => {
   try {
@@ -57,7 +58,27 @@ export const crearPedido = async (req, res, next) => {
       cliente: req.usuario.rol === 'cliente' ? req.usuario.id : req.body.cliente,
     };
 
+    for (const item of data.items) {
+      const producto = await Producto.findById(item.producto).select('nombre precio stock');
+      if (!producto) {
+        return res.status(404).json({ ok: false, error: `Producto no encontrado` });
+      }
+      if (producto.stock < item.cantidad) {
+        return res.status(400).json({
+          ok: false,
+          error: `Stock insuficiente para "${producto.nombre}". Disponible: ${producto.stock}, solicitado: ${item.cantidad}`
+        });
+      }
+    }
+
     const pedido = await Pedido.create({ ...data, estado: 'confirmado' });
+
+    for (const item of data.items) {
+      await Producto.findByIdAndUpdate(item.producto, {
+        $inc: { stock: -item.cantidad }
+      });
+    }
+
     const populated = await pedido.populate([
       { path: 'cliente', select: 'primerNombre apellido email' },
       { path: 'items.producto', select: 'nombre precio' },

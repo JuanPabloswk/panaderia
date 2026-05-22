@@ -51,6 +51,7 @@ function Navbar() {
                                         </ul>
                                     </div>
                                 </li>
+                                <li><NavLink to="/preguntas-frecuentes" className="uk-link-reset">Preguntas Frecuentes</NavLink></li>
                             </ul>
                         </div>
                         <NavLink to="/" className="uk-navbar-item uk-logo">

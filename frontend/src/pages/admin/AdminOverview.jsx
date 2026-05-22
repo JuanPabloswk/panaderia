@@ -35,10 +35,10 @@ function AdminOverview() {
   return (
     <div>
       <h3 style={{ color: '#584125' }}>Resumen del día</h3>
-      <div className="uk-grid-small uk-child-width-1-5@m uk-child-width-1-2@s" data-uk-grid>
+      <div className="uk-grid-small uk-child-width-1-5@m uk-child-width-1-2@s" data-uk-grid data-uk-grid-match>
         {cards.map((card) => (
           <div key={card.title}>
-            <div className="uk-card uk-card-default uk-card-body uk-text-center uk-border-rounded" style={{ borderTop: `4px solid ${card.color}` }}>
+            <div className="uk-card uk-card-default uk-card-body uk-text-center uk-border-rounded uk-flex uk-flex-column uk-flex-center" style={{ borderTop: `4px solid ${card.color}`, minHeight: '140px' }}>
               <p style={{ fontSize: '36px', fontWeight: 'bold', color: card.color, margin: 0 }}>{card.value}</p>
               <p style={{ color: '#584125', margin: '5px 0 0' }}>{card.title}</p>
             </div>
