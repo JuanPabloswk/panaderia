@@ -42,11 +42,12 @@ function AdminOverview() {
               className="uk-card uk-card-default uk-card-body uk-text-center uk-border-rounded"
               style={{
                 borderTop: `4px solid ${card.color}`,
-                minHeight: '150px',
+                height: '150px',
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'center',
                 alignItems: 'center',
+                boxSizing: 'border-box',
               }}
             >
               <p style={{ fontSize: '36px', fontWeight: 'bold', color: card.color, margin: 0 }}>{card.value}</p>

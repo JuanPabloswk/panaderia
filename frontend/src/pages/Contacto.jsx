@@ -82,7 +82,7 @@ function Contacto() {
               </li>
             </ul>
 
-            <div className="uk-flex uk-flex-left uk-margin-top">
+            {/* <div className="uk-flex uk-flex-left uk-margin-top">
               <a
                 href="https://facebook.com"
                 target="_blank"
@@ -111,7 +111,7 @@ function Contacto() {
                 className="uk-icon-button"
                 data-uk-icon="youtube"
               ></a>
-            </div>
+            </div> */}
           </div>
 
         </div>
